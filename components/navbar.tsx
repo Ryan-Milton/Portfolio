@@ -1,3 +1,4 @@
+"use client";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -16,12 +17,17 @@ import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import profilePic from "@/assets/FB_Profile.jpg";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export const Navbar = () => {
+  const [active, setActive] = useState("/");
+  useEffect(() => {
+    setActive(window.location.pathname);
+  }, []);
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
+    <NextUINavbar maxWidth="lg" position="sticky" className="bg-transparent">
       <NavbarBrand className="hidden md:flex">
-        <NextLink href="/" passHref>
+        <NextLink href="/" passHref onClick={() => setActive("/")}>
           <Image
             src={profilePic}
             alt="Profile Picture"
@@ -36,12 +42,17 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
+                  `${active === item.href ? "text-primary" : "text-foreground"}`,
+                  "relative"
                 )}
                 color="foreground"
                 href={item.href}
+                onClick={() => setActive(item.href)}
               >
                 {item.label}
+                {active === item.href && (
+                  <span className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-primary-500/0 via-primary-500/40 to-primary-500/0 dark:from-primary-400/0 dark:via-primary-400/40 dark:to-primary-400/0" />
+                )}
               </NextLink>
             </NavbarItem>
           ))}
@@ -62,19 +73,23 @@ export const Navbar = () => {
         <div className="mx-4 mt-2 flex flex-col gap-2">
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                href="#"
-                size="lg"
+              <NextLink
+                className={clsx(
+                  linkStyles({ color: "foreground" }),
+                  `${active === item.href ? "text-primary" : "text-foreground"}`,
+                  "relative text-2xl"
+                )}
+                color="foreground"
+                href={item.href}
+                onClick={() => {
+                  setActive(item.href);
+                }}
               >
                 {item.label}
-              </Link>
+                {active === item.href && (
+                  <span className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-primary-500/0 via-primary-500/40 to-primary-500/0 dark:from-primary-400/0 dark:via-primary-400/40 dark:to-primary-400/0" />
+                )}
+              </NextLink>
             </NavbarMenuItem>
           ))}
         </div>

@@ -1,11 +1,13 @@
-import { Fira_Code as FontMono, Inter as FontSans } from "next/font/google";
+import { Ubuntu, Ubuntu_Mono as FontUbuntuMono } from "next/font/google";
 
-export const fontSans = FontSans({
+export const fontSans = Ubuntu({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-ubuntu",
+  weight: "400",
 });
 
-export const fontMono = FontMono({
+export const fontMono = FontUbuntuMono({
   subsets: ["latin"],
   variable: "--font-mono",
+  weight: "400",
 });

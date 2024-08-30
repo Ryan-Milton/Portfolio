@@ -125,7 +125,7 @@ export default function About() {
               Follow on LinkedIn
             </SocialLink>
             <SocialLink
-              href="mailto:mr.ryan.milton@gmail.com"
+              href="mailto:mr.ryan.milton@gmail.com?subject=Inquiry%20About%20Your%20Services"
               icon={faEnvelope}
               className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
             >

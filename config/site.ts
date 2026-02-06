@@ -2,19 +2,19 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: "Ryan Milton",
-  description: "Custom problems from custom solutions",
+  description: "Software designer, creator, and kei car enthusiast.",
   navItems: [
     {
       label: "About",
       href: "/about",
     },
-    // {
-    //   label: "Blog",
-    //   href: "/blog",
-    // },
     {
       label: "Projects",
       href: "/projects",
+    },
+    {
+      label: "Blog",
+      href: "/blog",
     },
   ],
   navMenuItems: [
@@ -23,19 +23,20 @@ export const siteConfig = {
       label: "About",
       href: "/about",
     },
-    // {
-    //   label: "Blog",
-    //   href: "/blog",
-    // },
     {
       label: "Projects",
       href: "/projects",
     },
+    {
+      label: "Blog",
+      href: "/blog",
+    },
   ],
   links: {
-    github: "https://github.com/nextui-org/nextui",
-    twitter: "https://twitter.com/getnextui",
-    discord: "https://discord.gg/9b6yyZKmH4",
-    sponsor: "https://patreon.com/jrgarciadev",
+    github: "https://github.com/Ryan-Milton",
+    twitter: "https://x.com/ryan__milton",
+    instagram: "https://www.instagram.com/ryan_ohkeilife",
+    email:
+      "mailto:mr.ryan.milton@gmail.com?subject=Inquiry%20About%20Your%20Services",
   },
 };

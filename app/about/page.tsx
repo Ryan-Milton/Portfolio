@@ -2,9 +2,6 @@ import { type Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
-
-import { Container } from "@/components/Container";
-import profilePic from "@/assets/FB_Profile.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGithub,
@@ -13,6 +10,8 @@ import {
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+
+import profilePic from "@/assets/FB_Profile.jpg";
 
 function SocialLink({
   className,
@@ -28,10 +27,10 @@ function SocialLink({
   return (
     <li className={clsx(className, "flex")}>
       <Link
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
         className="group flex text-sm font-medium text-zinc-800 transition hover:text-primary-500 dark:text-zinc-200 dark:hover:text-primary-500"
+        href={href}
+        rel="noopener noreferrer"
+        target="_blank"
       >
         <FontAwesomeIcon
           className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-primary-500"
@@ -56,10 +55,10 @@ export default function About() {
         <div className="lg:pl-20">
           <div className="max-w-xs px-2.5 lg:max-w-none">
             <Image
-              src={profilePic}
               alt=""
-              sizes="(min-width: 1024px) 32rem, 20rem"
               className="aspect-square rotate-3 rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800"
+              sizes="(min-width: 1024px) 32rem, 20rem"
+              src={profilePic}
             />
           </div>
         </div>
@@ -107,27 +106,35 @@ export default function About() {
           </div>
         </div>
         <div className="lg:pl-20">
-          <ul role="list">
+          <ul>
             <SocialLink href="https://x.com/ryan__milton" icon={faXTwitter}>
               Follow on X
             </SocialLink>
             <SocialLink
+              className="mt-4"
               href="https://www.instagram.com/ryan_ohkeilife"
               icon={faInstagram}
-              className="mt-4"
             >
               Follow on Instagram
             </SocialLink>
-            <SocialLink href="#" icon={faGithub} className="mt-4">
+            <SocialLink
+              className="mt-4"
+              href="https://github.com/Ryan-Milton"
+              icon={faGithub}
+            >
               Follow on GitHub
             </SocialLink>
-            <SocialLink href="#" icon={faLinkedin} className="mt-4">
+            <SocialLink
+              className="mt-4"
+              href="https://www.linkedin.com/in/ryanmilton"
+              icon={faLinkedin}
+            >
               Follow on LinkedIn
             </SocialLink>
             <SocialLink
+              className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
               href="mailto:mr.ryan.milton@gmail.com?subject=Inquiry%20About%20Your%20Services"
               icon={faEnvelope}
-              className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
             >
               mr.ryan.milton@gmail.com
             </SocialLink>

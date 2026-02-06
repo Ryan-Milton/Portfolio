@@ -7,31 +7,32 @@ import {
   NavbarBrand,
   NavbarItem,
   NavbarMenuItem,
-} from "@nextui-org/navbar";
-import { Link } from "@nextui-org/link";
-import { link as linkStyles } from "@nextui-org/theme";
+  link as linkStyles,
+} from "@nextui-org/react";
 import NextLink from "next/link";
 import clsx from "clsx";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import profilePic from "@/assets/FB_Profile.jpg";
-import Image from "next/image";
-import { useEffect, useState } from "react";
 
 export const Navbar = () => {
   const [active, setActive] = useState("/");
+
   useEffect(() => {
     setActive(window.location.pathname);
   }, []);
+
   return (
-    <NextUINavbar maxWidth="lg" position="sticky" className="bg-transparent">
+    <NextUINavbar className="bg-transparent" maxWidth="lg" position="sticky">
       <NavbarBrand className="hidden md:flex">
-        <NextLink href="/" passHref onClick={() => setActive("/")}>
+        <NextLink passHref href="/" onClick={() => setActive("/")}>
           <Image
-            src={profilePic}
             alt="Profile Picture"
             className="w-8 h-8 rounded-full"
+            src={profilePic}
           />
         </NextLink>
       </NavbarBrand>
@@ -43,7 +44,7 @@ export const Navbar = () => {
                 className={clsx(
                   linkStyles({ color: "foreground" }),
                   `${active === item.href ? "text-primary" : "text-foreground"}`,
-                  "relative"
+                  "relative",
                 )}
                 color="foreground"
                 href={item.href}
@@ -77,7 +78,7 @@ export const Navbar = () => {
                 className={clsx(
                   linkStyles({ color: "foreground" }),
                   `${active === item.href ? "text-primary" : "text-foreground"}`,
-                  "relative text-2xl"
+                  "relative text-2xl",
                 )}
                 color="foreground"
                 href={item.href}

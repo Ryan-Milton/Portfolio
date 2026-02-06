@@ -1,9 +1,11 @@
 import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
-import { faArrowDownToLine } from "@fortawesome/pro-regular-svg-icons";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@nextui-org/button";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Button } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import Image, { ImageProps } from "next/image";
+import Link from "next/link";
+
 import Anduril from "@/assets/Anduril Logo.png";
 import Buddy from "@/assets/Buddy Tech Logo.jpg";
 import Groupon from "@/assets/Groupon-Symbol.png";
@@ -17,7 +19,7 @@ interface Role {
   end: string | { label: string; dateTime: string };
 }
 
-function Role({ role }: { role: Role }) {
+function RoleItem({ role }: { role: Role }) {
   let startLabel =
     typeof role.start === "string" ? role.start : role.start.label;
   let startDate =
@@ -30,12 +32,12 @@ function Role({ role }: { role: Role }) {
     <li className="flex gap-4">
       <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
         <Image
-          src={role.logo}
+          unoptimized
           alt={role.company}
           className="rounded-full"
-          width={40}
           height={40}
-          unoptimized
+          src={role.logo}
+          width={40}
         />
       </div>
       <dl className="flex flex-auto flex-wrap gap-x-2 items-center">
@@ -49,8 +51,8 @@ function Role({ role }: { role: Role }) {
         </dd>
         <dt className="sr-only">Date</dt>
         <dd
-          className="ml-auto text-xs text-zinc-400 dark:text-zinc-500"
           aria-label={`${startLabel} until ${endLabel}`}
+          className="ml-auto text-xs text-zinc-400 dark:text-zinc-500"
         >
           <time dateTime={startDate}>{startLabel}</time>{" "}
           <span aria-hidden="true">—</span>{" "}
@@ -107,16 +109,22 @@ export default function Resume() {
       <CardBody>
         <ol className="mt-2.5 space-y-4">
           {resume.map((role, roleIndex) => (
-            <Role key={roleIndex} role={role} />
+            <RoleItem key={roleIndex} role={role} />
           ))}
         </ol>
       </CardBody>
       <CardFooter>
-        <Button href="#" color="default" className="group mt-3 w-full">
-          Resume
+        <Button
+          as={Link}
+          className="group mt-3 w-full"
+          color="default"
+          download="Ryan_Milton_Resume.pdf"
+          href="/resume.pdf"
+        >
+          Download Resume
           <FontAwesomeIcon
-            icon={faArrowDownToLine}
             className="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50 dark:group-active:stroke-zinc-50"
+            icon={faDownload}
           />
         </Button>
       </CardFooter>

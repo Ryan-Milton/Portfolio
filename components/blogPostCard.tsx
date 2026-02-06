@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import Link from "next/link";
 
 export default function PostCard({
@@ -24,8 +24,8 @@ export default function PostCard({
         </CardBody>
         <CardFooter>
           <Link
-            href={`/blog/${post.slug}`}
             className="text-sm font-medium text-primary-500 dark:text-primary-400"
+            href={`/blog/${post.slug}`}
           >
             Read more →
           </Link>

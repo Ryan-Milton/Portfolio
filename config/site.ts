@@ -3,6 +3,7 @@ export type SiteConfig = typeof siteConfig;
 export const siteConfig = {
   name: "Ryan Milton",
   description: "Software designer, creator, and kei car enthusiast.",
+  url: "https://ryguy.dev",
   navItems: [
     {
       label: "About",

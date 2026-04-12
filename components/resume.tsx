@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import Image, { ImageProps } from "next/image";
-import Link from "next/link";
 
 import Anduril from "@/assets/Anduril Logo.png";
 import Buddy from "@/assets/Buddy Tech Logo.jpg";
@@ -32,7 +31,6 @@ function RoleItem({ role }: { role: Role }) {
     <li className="flex gap-4">
       <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
         <Image
-          unoptimized
           alt={role.company}
           className="rounded-full"
           height={40}
@@ -115,7 +113,7 @@ export default function Resume() {
       </CardBody>
       <CardFooter>
         <Button
-          as={Link}
+          as="a"
           className="group mt-3 w-full"
           color="default"
           download="Ryan_Milton_Resume.pdf"

@@ -1,3 +1,90 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Background atmosphere */
+.bg-atmosphere {
+  position: relative;
+}
+.bg-atmosphere::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.bg-atmosphere::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 600px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(100px);
+  background: radial-gradient(
+    ellipse,
+    rgba(139, 92, 246, 0.04),
+    transparent 70%
+  );
+  animation: glow-pulse 8s ease-in-out infinite;
+}
+.dark .bg-atmosphere::after {
+  background: radial-gradient(
+    ellipse,
+    rgba(139, 92, 246, 0.08),
+    transparent 70%
+  );
+}
+
+/* rehype-pretty-code: dual theme support */
+[data-theme="light"] {
+  display: block;
+}
+[data-theme="dark"] {
+  display: none;
+}
+.dark [data-theme="light"] {
+  display: none;
+}
+.dark [data-theme="dark"] {
+  display: block;
+}
+
+/* rehype-pretty-code: line highlighting */
+[data-highlighted-line] {
+  background-color: rgba(200, 200, 255, 0.1);
+  border-left: 2px solid rgb(99, 102, 241);
+  padding-left: calc(1rem - 2px);
+}
+
+/* rehype-pretty-code: word highlighting */
+[data-highlighted-chars] {
+  background-color: rgba(200, 200, 255, 0.15);
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+}
+
+/* Heading anchor links */
+.anchor {
+  text-decoration: none !important;
+  position: relative;
+}
+.anchor:hover::before {
+  content: "#";
+  position: absolute;
+  left: -1.5em;
+  color: rgb(161, 161, 170);
+  font-weight: 400;
+}
+
+/* Smooth scroll for anchor navigation */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}

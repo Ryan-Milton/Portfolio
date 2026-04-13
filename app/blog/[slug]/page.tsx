@@ -39,7 +39,7 @@ export default function BlogPost({ params }: BlogPostProps) {
   return (
     <article className="container mx-auto max-w-3xl py-8">
       <header className="mb-8">
-        {post.image && (
+        {post.image && !post.image.startsWith("http") && (
           <div className="mb-6 overflow-hidden rounded-xl">
             <Image
               priority
@@ -49,6 +49,16 @@ export default function BlogPost({ params }: BlogPostProps) {
               sizes="(max-width: 768px) 100vw, 720px"
               src={post.image}
               width={1200}
+            />
+          </div>
+        )}
+        {post.image && post.image.startsWith("http") && (
+          <div className="mb-6 overflow-hidden rounded-xl">
+            {/* eslint-disable-next-line */}
+            <img
+              alt={post.title}
+              className="w-full rounded-xl"
+              src={post.image}
             />
           </div>
         )}

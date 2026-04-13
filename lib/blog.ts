@@ -34,7 +34,7 @@ export function getAllPosts(): PostMeta[] {
       summary: data.summary,
       publishedAt: data.publishedAt,
       tags: data.tags,
-      image: data.image || null,
+      image: data.image ?? undefined,
       readingTime: Math.ceil(readingTime(content).minutes),
     };
   });
@@ -59,7 +59,7 @@ export function getPostBySlug(slug: string): Post | null {
     summary: data.summary,
     publishedAt: data.publishedAt,
     tags: data.tags,
-    image: data.image || null,
+    image: data.image ?? undefined,
     content,
   };
 }

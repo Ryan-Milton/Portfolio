@@ -11,7 +11,6 @@ export function AnimatedGrid({
 }) {
   return (
     <motion.div
-      animate="visible"
       className={className}
       initial="hidden"
       variants={{
@@ -26,27 +25,19 @@ export function AnimatedGrid({
   );
 }
 
-export function AnimatedGridItem({
-  children,
-  index,
-}: {
-  children: React.ReactNode;
-  index: number;
-}) {
+export function AnimatedGridItem({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      custom={index}
       variants={{
         hidden: { opacity: 0, y: 20 },
-        visible: (i: number) => ({
+        visible: {
           opacity: 1,
           y: 0,
           transition: {
-            delay: i * 0.1,
             duration: 0.4,
             ease: [0.25, 0.46, 0.45, 0.94],
           },
-        }),
+        },
       }}
     >
       {children}

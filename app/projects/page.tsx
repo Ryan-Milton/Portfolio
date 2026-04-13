@@ -71,8 +71,8 @@ export default function ProjectsPage() {
 
       {/* Project grid */}
       <AnimatedGrid className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {remaining.map((project, i) => (
-          <AnimatedGridItem key={project.name} index={i}>
+        {remaining.map((project) => (
+          <AnimatedGridItem key={project.name}>
             <ProjectCard project={project} />
           </AnimatedGridItem>
         ))}

@@ -33,8 +33,8 @@ export default function BlogPage() {
       <div className="mb-12 h-px w-full bg-gradient-to-r from-transparent via-zinc-300 to-transparent dark:via-zinc-700" />
 
       <AnimatedGrid className="flex flex-col gap-6">
-        {posts.map((post, i) => (
-          <AnimatedGridItem key={post.slug} index={i}>
+        {posts.map((post) => (
+          <AnimatedGridItem key={post.slug}>
             <PostCard post={post} />
           </AnimatedGridItem>
         ))}

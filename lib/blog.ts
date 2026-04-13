@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import matter from "gray-matter";
+import readingTime from "reading-time";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 
@@ -11,6 +12,8 @@ export interface PostMeta {
   summary: string;
   publishedAt: string;
   tags?: string[];
+  image?: string;
+  readingTime?: number;
 }
 
 export interface Post extends PostMeta {
@@ -23,7 +26,7 @@ export function getAllPosts(): PostMeta[] {
   const posts: PostMeta[] = files.map((filename) => {
     const slug = filename.replace(/\.mdx$/, "");
     const raw = fs.readFileSync(path.join(BLOG_DIR, filename), "utf-8");
-    const { data } = matter(raw);
+    const { data, content } = matter(raw);
 
     return {
       slug,
@@ -31,6 +34,8 @@ export function getAllPosts(): PostMeta[] {
       summary: data.summary,
       publishedAt: data.publishedAt,
       tags: data.tags,
+      image: data.image ?? undefined,
+      readingTime: Math.ceil(readingTime(content).minutes),
     };
   });
 
@@ -54,8 +59,15 @@ export function getPostBySlug(slug: string): Post | null {
     summary: data.summary,
     publishedAt: data.publishedAt,
     tags: data.tags,
+    image: data.image ?? undefined,
     content,
   };
+}
+
+export function getReadingTime(content: string): number {
+  const result = readingTime(content);
+
+  return Math.ceil(result.minutes);
 }
 
 export function getAllSlugs(): string[] {

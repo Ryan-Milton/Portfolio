@@ -1,3 +1,5 @@
+import type { AccentColor } from "./colors";
+
 export interface Project {
   name: string;
   description: string;
@@ -5,6 +7,8 @@ export interface Project {
   liveUrl?: string;
   repoUrl?: string;
   year: string;
+  accent?: AccentColor;
+  featured?: boolean;
 }
 
 export const projects: Project[] = [
@@ -14,6 +18,8 @@ export const projects: Project[] = [
       "A next-generation digital assistant powered by multi-modal large language models. Co-founded as CTO, building the future of AI-driven personal assistance.",
     techStack: ["TypeScript", "React", "Node.js", "LLMs", "AI/ML"],
     year: "2024",
+    accent: "violet",
+    featured: true,
   },
   {
     name: "OhKei Life",
@@ -22,6 +28,7 @@ export const projects: Project[] = [
     techStack: ["React", "Next.js", "Tailwind CSS"],
     liveUrl: "https://www.instagram.com/ryan_ohkeilife",
     year: "2024",
+    accent: "yellow",
   },
   {
     name: "Focus App",
@@ -29,6 +36,7 @@ export const projects: Project[] = [
       "A productivity application designed to help users maintain deep focus through flexible time blocks, ambient soundscapes, and distraction-free workflows.",
     techStack: ["React Native", "TypeScript", "Node.js"],
     year: "2024",
+    accent: "cyan",
   },
   {
     name: "Portfolio",
@@ -37,5 +45,6 @@ export const projects: Project[] = [
     techStack: ["Next.js", "TypeScript", "Tailwind CSS", "MDX"],
     repoUrl: "https://github.com/Ryan-Milton/Portfolio",
     year: "2024",
+    accent: "green",
   },
 ];

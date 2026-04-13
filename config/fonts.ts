@@ -1,21 +1,13 @@
-// System font stacks — no network fetch required.
-// Replace with next/font/google imports (Ubuntu, Ubuntu_Mono) when deploying
-// to an environment with internet access (e.g. Vercel).
+import { Ubuntu, Ubuntu_Mono } from "next/font/google";
 
-export const fontSans = {
-  className: "",
+export const fontSans = Ubuntu({
+  subsets: ["latin"],
   variable: "--font-sans",
-  style: {
-    fontFamily:
-      "'Ubuntu', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
-  },
-};
+  weight: ["300", "400", "500", "700"],
+});
 
-export const fontMono = {
-  className: "",
+export const fontMono = Ubuntu_Mono({
+  subsets: ["latin"],
   variable: "--font-mono",
-  style: {
-    fontFamily:
-      "'Ubuntu Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
-  },
-};
+  weight: ["400", "700"],
+});

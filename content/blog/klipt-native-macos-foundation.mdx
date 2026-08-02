@@ -1,0 +1,68 @@
+---
+title: "Building Klipt's Native macOS Foundation"
+summary: "How Klipt grew from a native clipboard prototype into a merged macOS app, private licensing system, and release candidate without sending clipboard contents to a server."
+publishedAt: "2026-07-22"
+updatedAt: "2026-07-31"
+status: "published"
+format: "article"
+project: "Klipt"
+tags: ["Swift", "macOS", "CryptoKit", "product engineering", "release infrastructure"]
+---
+
+I started Klipt on July 22, 2026 as a small native macOS clipboard utility. This post records that foundation, with a July 31 update covering the product and release systems that followed.
+
+The native app and storefront are now merged in the public repository, and the marketing site is live at [klipt.dev](https://klipt.dev). A signed and notarized sandbox build has also exercised the release path. Klipt is not a public production release yet: there is no production installer, appcast, tag, or GitHub Release, and the public changelog still marks version 1.0 as coming soon.
+
+## Turning the Product Promise Into Native Behavior
+
+The site's promise is intentionally simple: "Everything you copy, ready." Klipt keeps clipboard history and reusable snippets one shortcut away while staying private, native, and out of the way. The commercial model follows the same restraint: one Apple Silicon Mac, one $5 purchase, and no subscription.
+
+The application uses Swift 6 and divides responsibilities between SwiftUI and AppKit. SwiftUI handles the menu bar, history interface, settings, onboarding, licensing, and observable state. AppKit takes over where macOS window behavior and system integration require more control.
+
+The history palette is an `NSPanel` hosting a SwiftUI view. It floats above normal windows, can appear across Spaces, and supports keyboard navigation without becoming a conventional document window. A `MenuBarExtra` provides quick access to history, capture controls, settings, and application status. This split keeps most interface code declarative while preserving native panel behavior.
+
+## Capturing Clipboard Data Faithfully
+
+macOS does not provide a general notification when the system clipboard changes, so Klipt watches `NSPasteboard.general.changeCount`. It checks every 350 milliseconds and reads the pasteboard only when that counter changes. Polling is not elegant, but it is predictable and avoids repeatedly decoding unchanged data.
+
+A major design goal is preserving what an application actually placed on the clipboard. A single pasteboard item can include plain text, rich text, images, file URLs, and application-specific representations. Instead of reducing every capture to one preferred format, Klipt records each item and its available representations. Restoring an entry can therefore reconstruct a much closer version of the original clipboard.
+
+Each payload receives a canonical SHA-256 content hash. Representations are sorted before hashing so their enumeration order does not create false differences. Re-copying equivalent content moves it to the front of history instead of retaining unnecessary duplicates.
+
+Klipt also includes nine persistent snippet slots. A slot can be filled from typed text, the current clipboard, or a drag operation, and each can have its own system-wide shortcut. Global shortcuts use Carbon's `RegisterEventHotKey`; a custom AppKit recorder handles remapping and reports conflicts when macOS rejects a combination.
+
+Direct paste is a separate concern. Klipt restores the selected payload, returns focus to the previous application, and synthesizes Command-V. That final step requires Accessibility permission. If the target cannot be verified or permission is unavailable, Klipt leaves the content on the clipboard and falls back to copy-only behavior instead of pretending the paste succeeded.
+
+## Keeping Clipboard Contents Local
+
+The marketing site says, "Your clipboard is not our business." The implementation enforces that boundary: history and snippets stay on the Mac, there is no cloud sync, and clipboard payloads are not sent through the licensing or commerce systems.
+
+Clipboard history can contain sensitive material, so I did not want readable payloads sitting in Application Support. The local store is implemented as a Swift actor, serializing storage mutations while keeping file operations away from unrelated UI state.
+
+Payloads and searchable metadata are encoded as binary property lists and encrypted with AES-GCM. On first launch, Klipt generates a random 32-byte key and stores it in the user's login Keychain. History items, snippets, and the manifest are written as separate encrypted files using atomic writes and file-protection options. Startup reconciliation removes orphaned payload files if a previous operation stopped between related writes.
+
+Storage is intentionally bounded. History keeps at most 100 entries, rejects individual captures larger than 100 MB, and applies a combined 1 GB limit. When space is needed, the oldest history is removed first. Snippets are treated as protected content and are not silently evicted.
+
+The local encryption key, license key, and random installation identifier live in separate Keychain entries. Keeping those concerns separate prevents the licensing system from becoming an identity source for clipboard encryption.
+
+There are unresolved tradeoffs. The current storage format has no key rotation or recovery mechanism; losing the Keychain key makes existing data unreadable. Manifest and payload writes are ordered but are not one database transaction, which is why startup reconciliation exists. Klipt also preserves concealed and transient pasteboard representations. Onboarding warns about that behavior, but a production exclusion policy still needs a deliberate decision.
+
+## Building the System Around the App
+
+[PR #1](https://github.com/Ryan-Milton/klipt/pull/1) merged the native application and the complete product platform on July 24. The same repository now contains a Next.js 16 storefront, Paddle checkout and webhook fulfillment, Neon and Drizzle persistence, Resend email delivery, customer account access, an operator console, and private installer distribution through Cloudflare R2.
+
+The license model uses a random installation UUID rather than a device fingerprint. A license can activate one installation, and repeated activation from that installation is idempotent. After a successful check, validation runs at most every 24 hours. Network and server failures preserve a previously active state, while authoritative refunded or revoked states remain blocked offline.
+
+Download fulfillment is intentionally separate from update delivery. An initial paid DMG is stored privately and redeemed through a one-use grant that resolves to a short-lived signed URL. Sparkle update archives and their EdDSA-signed appcast are designed to be public because they are useful only to an installed, licensed application.
+
+[PR #3](https://github.com/Ryan-Milton/klipt/pull/3) hardened that boundary by ensuring public GitHub Releases contain notes rather than the paid installer. Production release jobs can originate only from `main`, and the workflow verifies the signed appcast before publishing it.
+
+## Proving the Release Path Without Shipping It
+
+[PR #4](https://github.com/Ryan-Milton/klipt/pull/4) added an isolated sandbox release pipeline. It uses the production source, bundle identifier, Developer ID identity, hardened runtime, and notarization path, but points licensing, commerce, storage, email, and update configuration at sandbox resources.
+
+On July 26, that workflow produced a Klipt 1.0 sandbox DMG, signed it, notarized it with Apple, uploaded it to the private sandbox bucket, and registered the artifact. Later pull requests tightened DMG signing, database transactions, fulfillment email presentation, and test-license support.
+
+This is meaningful release validation, but it is not the same as shipping. The [public changelog](https://klipt.dev/changelog) still says the first production build is being prepared. The storefront and APIs are live, the native source is merged, and the sandbox artifact has exercised the supply chain. Final production credentials, clean-install acceptance, activation and refund checks, a public appcast, and the first production workflow run remain release gates.
+
+That distinction matters to me. Klipt has moved beyond a local prototype into a credible release candidate, but I will not describe it as shipped until a signed production build is actually available to customers.

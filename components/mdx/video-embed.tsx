@@ -1,62 +1,96 @@
+"use client";
+
+import { useState } from "react";
+
+import Image from "next/image";
+
 interface VideoEmbedProps {
-  url: string;
+  poster?: string;
   title?: string;
+  url: string;
 }
 
 function getVideoId(url: string): {
-  provider: "youtube" | "vimeo" | null;
   id: string | null;
+  provider: "youtube" | "vimeo" | null;
 } {
-  const ytMatch = url.match(
+  const youtubeMatch = url.match(
     /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{11})/,
   );
 
-  if (ytMatch) return { provider: "youtube", id: ytMatch[1] };
+  if (youtubeMatch) return { id: youtubeMatch[1], provider: "youtube" };
 
   const vimeoMatch = url.match(
     /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)(\d+)/,
   );
 
-  if (vimeoMatch) return { provider: "vimeo", id: vimeoMatch[1] };
+  if (vimeoMatch) return { id: vimeoMatch[1], provider: "vimeo" };
 
-  return { provider: null, id: null };
+  return { id: null, provider: null };
 }
 
 function getEmbedUrl(provider: "youtube" | "vimeo", id: string): string {
   if (provider === "youtube") {
-    return `https://www.youtube-nocookie.com/embed/${id}`;
+    return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
   }
 
-  return `https://player.vimeo.com/video/${id}`;
+  return `https://player.vimeo.com/video/${id}?autoplay=1`;
 }
 
-export function VideoEmbed({ url, title }: VideoEmbedProps) {
+export function VideoEmbed({ poster, title, url }: VideoEmbedProps) {
+  const [shouldLoad, setShouldLoad] = useState(false);
   const { provider, id } = getVideoId(url);
 
   if (!provider || !id) {
-    return (
-      <p className="text-red-500 dark:text-red-400">Invalid video URL: {url}</p>
-    );
+    return <p className="text-red-600 dark:text-red-400">Invalid video URL.</p>;
   }
 
-  const embedUrl = getEmbedUrl(provider, id);
+  const providerLabel = provider === "youtube" ? "YouTube" : "Vimeo";
 
   return (
     <figure className="my-8">
-      <div className="relative aspect-video overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-700">
-        <iframe
-          allowFullScreen
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          className="absolute inset-0 h-full w-full"
-          src={embedUrl}
-          title={title || "Embedded video"}
-        />
+      <div className="relative aspect-video overflow-hidden rounded-lg border border-zinc-200 bg-zinc-950 dark:border-zinc-700">
+        {shouldLoad ? (
+          <iframe
+            allowFullScreen
+            allow="autoplay; encrypted-media; picture-in-picture"
+            className="absolute inset-0 h-full w-full"
+            referrerPolicy="strict-origin-when-cross-origin"
+            src={getEmbedUrl(provider, id)}
+            title={title || "Embedded video"}
+          />
+        ) : (
+          <button
+            aria-label={`Load ${title ?? "video"} from ${providerLabel}`}
+            className="group absolute inset-0 flex h-full w-full items-center justify-center overflow-hidden text-white outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-violet-400"
+            type="button"
+            onClick={() => setShouldLoad(true)}
+          >
+            {poster && (
+              <Image
+                fill
+                alt=""
+                className="object-cover opacity-65 transition duration-300 group-hover:scale-[1.01] group-hover:opacity-75 motion-reduce:transition-none"
+                sizes="(max-width: 768px) 100vw, 720px"
+                src={poster}
+              />
+            )}
+            <span className="relative flex flex-col items-center gap-3 rounded-xl bg-zinc-950/80 px-5 py-4 backdrop-blur-sm">
+              <span
+                aria-hidden
+                className="flex size-12 items-center justify-center rounded-full bg-violet-600 text-xl shadow-lg"
+              >
+                &#9654;
+              </span>
+              <span className="text-sm font-semibold">Load video from {providerLabel}</span>
+            </span>
+          </button>
+        )}
       </div>
-      {title && (
-        <figcaption className="mt-2 text-center text-sm text-zinc-500 dark:text-zinc-400">
-          {title}
-        </figcaption>
-      )}
+      <figcaption className="mt-2 text-center text-sm text-zinc-500 dark:text-zinc-400">
+        {title ? `${title}. ` : ""}
+        The third-party player loads only after activation.
+      </figcaption>
     </figure>
   );
 }

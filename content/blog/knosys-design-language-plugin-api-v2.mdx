@@ -1,0 +1,59 @@
+---
+title: "Designing Knosys 2.0: One Design Language and a New Plugin Contract"
+summary: "How I turned a broad product redesign into a shared design system while replacing bundled extensions with a versioned, independently distributed plugin platform."
+publishedAt: "2026-05-04"
+status: "published"
+format: "article"
+project: "Knosys"
+tags: ["design systems", "plugin architecture", "React", "Tailwind CSS", "desktop"]
+---
+
+Knosys 2.0 started as a visual redesign, but it quickly exposed a deeper problem. Desktop, mobile, marketing, and supporting web applications had similar intentions without a shared design contract. Components looked related, yet each surface made its own decisions about color, spacing, motion, density, and interaction.
+
+At the same time, the plugin system still treated extensions as code that shipped with the host. That limited independent releases and made it difficult for plugin authors to build interfaces that felt native to Knosys.
+
+I addressed both problems in one coordinated release: the Knosys Design Language, or KDL, and Plugin API v2. The implementation merged on May 4, 2026.
+
+## Building a Language, Not a Reskin
+
+I wanted the redesign to be expressed as reusable decisions rather than a collection of polished screenshots. KDL therefore began with semantic tokens for color, typography, spacing, radii, elevation, materials, motion, focus treatment, and layout.
+
+The tokens describe purpose instead of individual pages. A raised surface or secondary label means the same thing in Settings, Notes, Calendar, and a plugin. Light and dark themes can change concrete values while preserving those relationships.
+
+Density was also treated as a first-class setting. Roomy, Comfortable, and Compact modes change row dimensions and selected spacing values without forcing every component to maintain separate layouts. Reduced-motion preferences replace animation durations and spring curves at the token level, with an application-wide motion configuration covering component animations.
+
+On top of that foundation, I built a shared UI package with 23 primitives. It includes basic controls, containers, overlays, navigation patterns, grouped rows, sheets, and scrolling behavior. Storybook documents both the foundations and the component states, making the design system inspectable outside the product.
+
+KDL was then applied across the desktop workspace, marketing site, feedback interface, and the mobile client that existed at the time. On desktop, the work also used native window vibrancy, improved focus visibility, and corrected Spotlight semantics with combobox roles and active-descendant navigation.
+
+## Sharing Intent Across Platforms
+
+Web applications can consume CSS custom properties directly, but React Native cannot. Rather than abandon shared design decisions, I created a JavaScript token adapter for mobile.
+
+The adapter mirrors the KDL palette, spacing, radii, typography, and accent options in a form native components can consume. Theme state persists the selected mode and accent while still supporting system appearance changes.
+
+This does introduce two representations of the token set. I accepted that tradeoff because forcing CSS concepts through a native runtime would have produced a weaker abstraction. The important contract is semantic parity, not identical implementation technology.
+
+A compatibility layer also mapped older desktop variables onto the new system. That allowed the product to migrate surface by surface instead of requiring a risky all-at-once rewrite.
+
+## A Hard Boundary for Plugins
+
+The second half of the release replaced the previous plugin contract with an explicit v2 manifest discriminator. Plugins must declare the supported Knosys API version and host compatibility. Older manifests remain visible as incompatible entries, but the host does not execute their code.
+
+That was a deliberate hard break. Keeping an ambiguous fallback would have made every future API change responsible for preserving undocumented behavior.
+
+Plugin distribution moved out of the application bundle and into a community registry. The installer downloads release archives, verifies their SHA-256 digest, rejects unsafe archive paths, extracts into a staging directory, validates the manifest, and atomically moves a successful installation into place. Failed or incompatible installs do not become active plugins.
+
+The runtime exposes namespaced KDL components, a typed notification API, logging, theme state, and lifecycle events. Plugins execute outside the React context tree, so I added a small host bus that publishes current theme and lifecycle state without coupling plugin code to application internals.
+
+A legacy component namespace remains available as an escape hatch. It reduces migration pressure, although it also means the host must carry that compatibility surface longer.
+
+## Tradeoffs and Validation
+
+Plugin API v2 improved the boundary by breaking it intentionally. Existing v1 plugins required updates, and users needed compatible releases. In return, the loader gained a contract it could validate before executing third-party code.
+
+Archive integrity relied on registry-provided SHA-256 values. Cryptographic release signing was documented but deferred, so I did not treat the installer as a complete software-supply-chain solution.
+
+The redesign itself touched a wide area, which made visual regressions the largest risk. Validation combined workspace typechecks, Electron and web production builds, Storybook coverage, end-to-end plugin installation checks, and manual testing across themes, accents, densities, reduced motion, and major product surfaces.
+
+The result was more than a new coat of paint. KDL gave Knosys a reusable product vocabulary, while Plugin API v2 gave external features a clearer and more independent place within it.

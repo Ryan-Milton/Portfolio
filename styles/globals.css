@@ -1,6 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "@heroui/styles";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: var(--font-ubuntu);
+  --font-mono: var(--font-ubuntu-mono);
+}
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+}
+
+.site-primary-button {
+  background-color: #6d28d9 !important;
+  color: #fff !important;
+}
+
+.site-primary-button:hover {
+  background-color: #5b21b6 !important;
+}
+
+.project-rail-track {
+  --rail-gutter: max(0px, calc((100% - 72rem) / 2));
+  padding-inline: var(--rail-gutter);
+  scroll-padding-inline: var(--rail-gutter);
+  scrollbar-color: rgb(161 161 170 / 0.55) transparent;
+  scrollbar-width: thin;
+}
 
 /* Background atmosphere */
 .bg-atmosphere {
@@ -33,6 +69,16 @@
     transparent 70%
   );
   animation: glow-pulse 8s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.04;
+  }
+  50% {
+    opacity: 0.08;
+  }
 }
 .dark .bg-atmosphere::after {
   background: radial-gradient(
@@ -87,4 +133,14 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .bg-atmosphere::after {
+    animation: none;
+  }
 }

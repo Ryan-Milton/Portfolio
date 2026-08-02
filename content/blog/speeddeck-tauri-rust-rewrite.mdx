@@ -1,0 +1,51 @@
+---
+title: "Why I Rebuilt SpeedDeck in Rust and Tauri"
+summary: "How I replaced SpeedDeck's Electron and Python architecture with a unified Rust and Tauri platform while preserving its proven GPS, trip, map, and navigation behavior."
+publishedAt: "2026-06-29"
+status: "published"
+format: "article"
+project: "SpeedDeck"
+tags: ["Rust", "Tauri", "React", "GPS", "Steam Deck"]
+---
+
+SpeedDeck began as a Python backend paired with an Electron and React frontend. That architecture was ideal for proving the idea quickly. Python handled serial communication, NMEA parsing, trip recording, and offline routing, while Electron provided a flexible interface for maps and telemetry.
+
+The prototype worked, but it also required two runtimes, a localhost WebSocket connection, and separate packaging paths for the backend and frontend. As SpeedDeck expanded from a speedometer into an offline infotainment system, those boundaries became harder to justify. I wanted one native application with a clearer ownership model for hardware, storage, media, and long-running processes.
+
+[Pull request #16](https://github.com/Ryan-Milton/SpeedDeck/pull/16) introduced SpeedDeck v2 as a Tauri 2, Rust, and React 19 application. Rather than deleting the original implementation, I moved it into `v1/` and built the replacement alongside it. That preserved a working reference and gave me a concrete specification for the rewrite.
+
+## Porting Behavior, Not Just Code
+
+The goal was not to redesign every algorithm. The Python version already contained behavior learned from physical GNSS testing, especially with the Navisys GR-M02U and its Airoha AG3335 chipset.
+
+I ported the GPS pipeline into a Rust `VehicleProvider` abstraction. The serial provider opens a receiver at 115200 baud, sends the `PAIR050` command for a 10 Hz update interval, and reconnects with bounded exponential backoff. A deterministic simulator implements the same provider interface for development.
+
+The NMEA parser remained intentionally small and specialized. It validates XOR checksums, recognizes GGA, RMC, and VTG sentences regardless of talker prefix, and emits a fix when an RMC sentence completes a cycle. It also preserves an important hardware-specific rule from v1: use VTG ground speed when available, then fall back to RMC speed.
+
+The data processor retained the same exponential moving averages, minimum-speed drift threshold, 3D distance calculation, and trip statistics. I added unit tests around checksum rejection, coordinate conversion, speed selection, smoothing, and trip accumulation so the port could be compared against known v1 behavior.
+
+## Replacing Process Boundaries With Tauri
+
+In v1, Python broadcast GPS state to Electron over a WebSocket server. In v2, Rust owns application state directly and communicates through Tauri commands and events.
+
+The vehicle hub emits `vehicle:state` updates to a Zustand store in the frontend. Commands handle trip lifecycle operations, map downloads, navigation, media playback, and settings. This removed the need to supervise a bundled Python process or coordinate startup between two independent runtimes.
+
+I preserved the existing SQLite trip schema in `rusqlite`, including trips, trackpoints, foreign-key deletion, and timestamp ordering. The recorder buffers ten trackpoints before writing a transaction, reducing write frequency while still flushing on pause or stop. Existing features such as rename, delete, and GPX export became Tauri commands.
+
+Offline maps moved into a Rust module with a bounded downloader and custom `tiles://` and `tile-cache://` protocols. PMTiles requires HTTP range reads, so the protocol handler returns proper `206 Partial Content` responses instead of loading an entire archive. Offline navigation uses a bundled `osrm-routed` sidecar, while local music uses `lofty` for metadata, SQLite FTS5 for search, and a dedicated `rodio` playback thread.
+
+## From Speedometer to Infotainment Platform
+
+The rewrite gave SpeedDeck a broader product foundation. The React application includes a live moving map, offline region management, turn-by-turn navigation, trip history, GPX export, a local music library, and a split dashboard combining map, navigation, music, and vehicle state.
+
+It also made deployment more explicit. The repository includes an AppImage build path, an OSRM sidecar configuration, and a SteamOS installer that sets up serial-device permissions and desktop launch integration.
+
+Code review exposed several risks that were worth addressing before merge. Navigation packs were changed to stream to disk instead of being buffered entirely in memory. Custom URI handlers canonicalize paths and confine reads to their resource roots. Region deletion validates the requested identifier before filesystem operations. Media queues use file paths rather than database IDs because rescanning the library can replace rows and assign new IDs.
+
+## Tradeoffs and Validation
+
+This was still a large rewrite: 228 files changed, with more than 13,000 lines added. Preserving v1 reduced rollback risk, but v2 introduced Rust, Tauri, native audio dependencies, and an OSRM sidecar that all needed platform-specific packaging.
+
+The merged implementation also fell back to simulated movement when no receiver was detected. That was convenient during development, but it could make missing hardware look like valid telemetry. I treated that as a later stabilization problem rather than expanding an already large migration.
+
+At merge time, the frontend production build passed and the isolated Rust logic suite reported 34 passing tests. GPS parsing, trip storage, GPX generation, route conversion, geocoding behavior, and media queue logic had automated coverage. Audio playback, the OSRM sidecar, AppImage execution, and the complete Steam Deck installation flow still required target-device validation. The rewrite established the architecture, but it did not by itself prove every hardware and endurance scenario on a physical Deck.

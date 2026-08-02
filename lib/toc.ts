@@ -1,3 +1,5 @@
+import GithubSlugger from "github-slugger";
+
 export interface TocItem {
   id: string;
   text: string;
@@ -9,6 +11,7 @@ export function extractToc(content: string): TocItem[] {
   const withoutCodeBlocks = content.replace(/```[\s\S]*?```/g, "");
 
   const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const slugger = new GithubSlugger();
   const toc: TocItem[] = [];
   let match;
 
@@ -19,10 +22,7 @@ export function extractToc(content: string): TocItem[] {
       .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // strip [text](url) → text
       .replace(/`([^`]+)`/g, "$1"); // strip backticks
 
-    const id = text
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/\s+/g, "-");
+    const id = slugger.slug(text);
 
     toc.push({ id, text, level });
   }

@@ -1,0 +1,51 @@
+---
+title: "Designing Eagle Eye Beyond the Desktop"
+summary: "Reworking Eagle Eye around a responsive shell, dual themes, and a reusable interface system while the redesign remains under review."
+publishedAt: "2026-07-21"
+status: "published"
+format: "article"
+project: "Eagle Eye"
+tags: ["React", "TypeScript", "responsive design", "design systems", "accessibility"]
+---
+
+Eagle Eye began as a dense desktop intelligence dashboard. That suited its map, tracking panels, timeline, and analysis views, but the layout depended on fixed viewport offsets and assumptions about available screen space. As the application grew, those assumptions became harder to maintain.
+
+In [open PR #2](https://github.com/Ryan-Milton/Eagle-Eye/pull/2), I am replacing that structure with a technical neo-brutalist design system and a responsive application shell. This work is still in progress and has not been merged or shipped. The goal is not only to change how Eagle Eye looks, but to establish clearer layout, theming, accessibility, and component foundations for future development.
+
+## Replacing Fixed Offsets With a Responsive Shell
+
+The previous layout positioned major surfaces independently. Each view needed to account for the top bar, timeline, tracking panel, and intelligence panel. That duplicated layout knowledge and made responsive behavior fragile.
+
+In the open PR, I moved those responsibilities into a single CSS grid in `App.tsx`. The shell defines rows for navigation, primary content, and the operational timeline. At wide breakpoints, it also defines columns for the tracking panel, center view, and intelligence panel. Globe, Objects, Graph, Signals, and Reports now fill the center grid cell instead of calculating their own offsets.
+
+The side panels remain docked when space allows. Below the desktop breakpoints, I render them through Radix Sheets. Tracking moves into a left drawer below `64rem`, while intelligence moves into a right drawer below `80rem`. This keeps the central workspace usable on narrower screens without deleting important controls.
+
+The tradeoff is additional responsive state and breakpoint coordination. The shell, media queries, and Tailwind classes must agree about when a panel is docked or presented as a Sheet. Because PR #2 remains open, I am treating uncommon viewport sizes and map resizing as areas that still need reviewer verification.
+
+## Bridging Two Theme Systems
+
+The redesign introduces two persisted themes: the dark `signal` theme and the light `schematic` theme. The selected theme is stored through the application state and applied before React renders, reducing the chance of showing the wrong theme during startup.
+
+Most interface components can consume CSS custom properties. Mapbox layers, Canvas rendering, and some Recharts configuration cannot reliably use the same variables in every context. To bridge that gap, I added a matching TypeScript palette registry in `visual-theme.ts`.
+
+CSS remains the browser-facing source for backgrounds, borders, typography, focus states, and component styling. TypeScript provides raw colors for Mapbox fog and layers, Graph Canvas nodes, chart series, geofences, measurements, and generated DOM content. This lets both `signal` and `schematic` affect the entire application rather than stopping at React components.
+
+That bridge creates deliberate duplication. Theme values now exist in CSS and TypeScript, and they can drift if one side changes without the other. Keeping the registries synchronized is one of the clearest maintenance costs in this work-in-progress PR.
+
+## Building a System I Can Inspect
+
+I also imported a source-owned catalog of Radix-based primitives for forms, overlays, navigation, feedback, charts, tables, and data-display states. I chose direct ownership rather than publishing a separate package because Eagle Eye frequently needs application-specific behavior.
+
+A development-only component gallery is available through `/?design-system`. It loads through a dynamic entry point and is excluded from the normal production route. I can use it to inspect both themes, responsive states, controls, and component combinations without navigating live data workflows.
+
+Accessibility is part of the same foundation. The timeline supports pointer capture and keyboard input, Sheets and dialogs use Radix focus management, icon controls receive accessible labels, and focus styles remain visible. Reduced-motion and forced-color preferences also receive dedicated treatment.
+
+I added a view-level error boundary so a renderer failure can be contained within the center workspace instead of removing navigation and operational panels. This is especially useful for a dashboard that depends on WebGL and several specialized renderers.
+
+## What Remains Open
+
+PR #2 changes presentation across the full frontend and is intentionally not feature-flagged. That gives the redesign a wide review surface: 101 files are changed, and visual regressions at unusual viewport sizes remain a real risk.
+
+The production bundle is also still approximately 2.58 MB minified, so view-level code splitting is a likely follow-up. The development gallery is dynamically imported, but the primary application views remain part of a large bundle.
+
+Most importantly, this is not a merged milestone yet. It is an open proposal for how Eagle Eye can move beyond a desktop-only layout while preserving its dense operational character. The architecture is in place, but final browser, WebGL, responsive, and reviewer validation still stands between this work and a shipped design system.

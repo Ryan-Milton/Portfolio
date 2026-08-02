@@ -51,9 +51,7 @@ export default function BlogArchivePage() {
         </Link>
       </div>
 
-      <div className="my-12 h-px w-full bg-gradient-to-r from-transparent via-zinc-300 to-transparent dark:via-zinc-700" />
-
-      <div className="flex flex-col gap-6">
+      <div className="mt-10 flex flex-col gap-6 border-t border-zinc-300 pt-10 dark:border-zinc-700">
         {posts.map((post) => (
           <PostCard key={post.slug} headingLevel={2} post={post} />
         ))}

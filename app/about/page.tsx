@@ -101,8 +101,8 @@ export default function About() {
             <Image
               priority
               alt="Ryan Milton"
-              className="aspect-square rotate-2 rounded-2xl bg-zinc-100 object-cover shadow-xl shadow-zinc-900/10 dark:bg-zinc-800"
-              sizes="(min-width: 1024px) 24rem, 20rem"
+              className="aspect-square w-full max-w-sm rotate-2 rounded-2xl bg-zinc-100 object-cover shadow-xl shadow-zinc-900/10 dark:bg-zinc-800"
+              sizes="(min-width: 1024px) 24rem, 24rem"
               src={profilePic}
             />
           </FadeIn>

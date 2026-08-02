@@ -1,5 +1,4 @@
 import {
-  faGithub,
   faLinkedin,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
@@ -17,7 +16,6 @@ import { siteConfig } from "@/config/site";
 import { getAllPosts } from "@/lib/blog";
 
 const socialLinks = [
-  { href: siteConfig.links.github, icon: faGithub, label: "GitHub" },
   { href: siteConfig.links.linkedin, icon: faLinkedin, label: "LinkedIn" },
   { href: siteConfig.links.youtube, icon: faYoutube, label: "YouTube" },
 ];
@@ -42,7 +40,7 @@ export default function Home() {
         <FadeIn delay={0.08}>
           <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-900 sm:text-6xl lg:text-7xl dark:text-zinc-50">
             Senior software engineer building products across{" "}
-            <span className="bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
+            <span className="text-zinc-500 dark:text-zinc-300">
               web, mobile, and desktop.
             </span>
           </h1>
@@ -76,7 +74,7 @@ export default function Home() {
               target="_blank"
             >
               View GitHub
-              <span aria-hidden>&nearr;</span>
+              <span aria-hidden>{"\u2197"}</span>
             </TrackedLink>
             <ul aria-label="Social profiles" className="ml-1 flex gap-1">
               {socialLinks.map((social) => (
@@ -102,23 +100,20 @@ export default function Home() {
         </FadeIn>
       </section>
 
-      <div className="mx-auto h-px w-full max-w-6xl bg-gradient-to-r from-transparent via-zinc-300 to-transparent dark:via-zinc-700" />
+      <div className="mx-auto w-full max-w-6xl border-t border-zinc-300 dark:border-zinc-700" />
 
       <ProjectRail projects={projects} />
 
       <section className="mx-auto mt-16 grid w-full max-w-6xl gap-12 border-t border-zinc-200/80 pt-20 sm:mt-20 lg:mt-24 lg:grid-cols-[minmax(0,1.1fr)_minmax(20rem,0.9fr)] dark:border-zinc-800">
         <div>
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
             <div>
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-violet-600 dark:text-violet-400">
-                Devlog
-              </p>
-              <h2 className="mt-3 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
+              <h2 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
                 Notes from active builds.
               </h2>
             </div>
             <Link
-              className="text-sm font-semibold text-violet-600 dark:text-violet-400"
+              className="shrink-0 whitespace-nowrap text-sm font-semibold text-violet-600 dark:text-violet-400"
               href="/blog"
             >
               All entries &rarr;
@@ -135,11 +130,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto mt-24 w-full max-w-6xl rounded-2xl border border-zinc-200 bg-white/50 p-7 sm:p-9 dark:border-zinc-800 dark:bg-zinc-900/35">
-        <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-violet-600 dark:text-violet-400">
-          Beyond the code
-        </p>
-        <div className="mt-4 grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
+      <section className="mx-auto mt-24 w-full max-w-6xl border-t border-zinc-200 pt-10 dark:border-zinc-800">
+        <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-end">
           <div className="max-w-3xl">
             <h2 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-50">
               Hardware roots, flight-deck discipline, product focus.

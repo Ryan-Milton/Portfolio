@@ -140,7 +140,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
           )}
         </div>
         {post.tags && post.tags.length > 0 && (
-          <div className="mt-3 flex gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             {post.tags.map((tag) => (
               <span
                 key={tag}

@@ -38,16 +38,13 @@ export default function BlogPage() {
           <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
             Devlog
           </h1>
-          <p className="mt-6 mb-12 text-zinc-600 dark:text-zinc-400">
+          <p className="mt-6 text-zinc-600 dark:text-zinc-400">
             Development notes, release updates, and project walkthroughs.
           </p>
         </div>
       </FadeIn>
 
-      {/* Gradient divider */}
-      <div className="mb-12 h-px w-full bg-gradient-to-r from-transparent via-zinc-300 to-transparent dark:via-zinc-700" />
-
-      <AnimatedGrid className="flex flex-col gap-6">
+      <AnimatedGrid className="mt-10 flex flex-col gap-6 border-t border-zinc-300 pt-10 dark:border-zinc-700">
         {posts.map((post) => (
           <AnimatedGridItem key={post.slug}>
             <PostCard headingLevel={2} post={post} />
@@ -57,7 +54,7 @@ export default function BlogPage() {
       <p className="mt-10 text-sm text-zinc-600 dark:text-zinc-400">
         Looking for older writing?{" "}
         <Link
-          className="font-medium text-violet-600 dark:text-violet-400"
+          className="inline-block whitespace-nowrap font-medium text-violet-600 dark:text-violet-400"
           href="/blog/archive"
         >
           Browse the archive

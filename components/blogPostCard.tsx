@@ -15,7 +15,7 @@ export default function PostCard({ headingLevel = 3, post }: PostCardProps) {
   const externalDestination = post.format === "video" ? " on YouTube" : "";
 
   return (
-    <article className="overflow-hidden rounded-xl border border-zinc-100 bg-zinc-50/10 text-left transition duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-zinc-700/40 dark:bg-zinc-800/10">
+    <article className="overflow-hidden rounded-xl border border-zinc-200/80 bg-zinc-50/10 text-left dark:border-zinc-800 dark:bg-zinc-800/10">
       {post.image && (
         <Image
           alt=""
@@ -47,17 +47,17 @@ export default function PostCard({ headingLevel = 3, post }: PostCardProps) {
             )}
           </div>
         </header>
-        <p className="mt-4 text-sm text-zinc-600 dark:text-zinc-400">
+        <p className="mt-4 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-400">
           {post.summary}
         </p>
         {post.tags && post.tags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5" aria-label="Topics">
+          <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1" aria-label="Topics">
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-zinc-100 px-2 py-0.5 text-[11px] font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300"
+                className="font-mono text-[11px] text-zinc-500 dark:text-zinc-400"
               >
-                {tag}
+                #{tag}
               </span>
             ))}
           </div>
@@ -74,11 +74,11 @@ export default function PostCard({ headingLevel = 3, post }: PostCardProps) {
               aria-label={`${externalAction}: ${post.title}${externalDestination} (opens in a new tab)`}
             >
               {externalAction}
-              <span aria-hidden="true">&nearr;</span>
+              <span aria-hidden="true">{"\u2197"}</span>
             </TrackedLink>
           )}
           <TrackedLink
-            className="group flex items-center gap-1 text-sm font-medium text-violet-600 dark:text-violet-400"
+            className="group flex items-center gap-1 text-sm font-medium text-zinc-700 hover:text-violet-600 dark:text-zinc-300 dark:hover:text-violet-400"
             event="devlog_opened"
             href={`/blog/${post.slug}`}
             properties={{ destination: "internal", slug: post.slug }}

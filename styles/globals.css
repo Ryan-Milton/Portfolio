@@ -17,8 +17,19 @@
   color-scheme: dark;
 }
 
+html,
+body {
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
+}
+
+h1,
+h2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .site-primary-button {
@@ -51,43 +62,6 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   pointer-events: none;
 }
-.bg-atmosphere::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 800px;
-  height: 600px;
-  z-index: -1;
-  pointer-events: none;
-  border-radius: 50%;
-  filter: blur(100px);
-  background: radial-gradient(
-    ellipse,
-    rgba(139, 92, 246, 0.04),
-    transparent 70%
-  );
-  animation: glow-pulse 8s ease-in-out infinite;
-}
-
-@keyframes glow-pulse {
-  0%,
-  100% {
-    opacity: 0.04;
-  }
-  50% {
-    opacity: 0.08;
-  }
-}
-.dark .bg-atmosphere::after {
-  background: radial-gradient(
-    ellipse,
-    rgba(139, 92, 246, 0.08),
-    transparent 70%
-  );
-}
-
 /* rehype-pretty-code: dual theme support */
 [data-theme="light"] {
   display: block;
@@ -121,7 +95,8 @@ body {
   text-decoration: none !important;
   position: relative;
 }
-.anchor:hover::before {
+.anchor:hover::before,
+.anchor:focus-visible::before {
   content: "#";
   position: absolute;
   left: -1.5em;
@@ -138,9 +113,5 @@ html {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-
-  .bg-atmosphere::after {
-    animation: none;
   }
 }

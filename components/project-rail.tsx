@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   faArrowLeft,
   faArrowRight,
@@ -21,6 +21,14 @@ interface ScrollState {
   canScrollForward: boolean;
 }
 
+function getScrollState(rail: HTMLOListElement): ScrollState {
+  return {
+    canScrollBack: rail.scrollLeft > 2,
+    canScrollForward:
+      rail.scrollLeft < rail.scrollWidth - rail.clientWidth - 2,
+  };
+}
+
 function ProjectVisual({ project }: { project: Project }) {
   return (
     <div className="relative h-56 overflow-hidden bg-zinc-950 p-6 text-zinc-100 sm:h-64">
@@ -29,23 +37,14 @@ function ProjectVisual({ project }: { project: Project }) {
           <Image
             fill
             alt={project.media.alt}
-            className="object-cover opacity-75 transition-transform duration-700 motion-reduce:transition-none motion-safe:group-hover:scale-[1.03]"
+            className="object-cover opacity-75"
             sizes="(min-width: 640px) 32rem, 85vw"
             src={project.media.src}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/15 to-zinc-950/30" />
         </>
       ) : (
-        <>
-          <div
-            aria-hidden
-            className="absolute -right-20 -top-24 size-64 rounded-full bg-violet-500/25 blur-3xl transition-transform duration-700 motion-reduce:transition-none motion-safe:group-hover:scale-110"
-          />
-          <div
-            aria-hidden
-            className="absolute -bottom-20 -left-16 size-52 rounded-full bg-fuchsia-700/15 blur-3xl"
-          />
-        </>
+        <div aria-hidden className="absolute inset-0 bg-zinc-950" />
       )}
 
       <div className="relative flex h-full flex-col justify-between gap-6">
@@ -53,7 +52,7 @@ function ProjectVisual({ project }: { project: Project }) {
           <span className="font-mono text-[0.68rem] uppercase tracking-[0.22em] text-violet-200">
             {project.featured ? "Featured system" : "Selected build"}
           </span>
-          <span aria-hidden className="font-mono text-xs text-zinc-500">
+          <span aria-hidden className="font-mono text-xs text-zinc-400">
             /{project.slug}
           </span>
         </div>
@@ -70,7 +69,7 @@ function ProjectVisual({ project }: { project: Project }) {
             {project.architecture.map((step, index) => (
               <li
                 key={step}
-                className="rounded-lg border border-white/10 bg-white/[0.045] px-3 py-2.5 backdrop-blur-sm"
+                className="border-t border-white/15 px-1 py-2.5"
               >
                 <span className="block font-mono text-[0.62rem] text-violet-300">
                   {String(index + 1).padStart(2, "0")}
@@ -105,13 +104,13 @@ function ProjectRailCard({ project }: { project: Project }) {
   return (
     <article
       aria-labelledby={headingId}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/65 shadow-sm transition-[border-color,box-shadow,transform] duration-300 motion-reduce:transition-none motion-safe:hover:-translate-y-0.5 motion-safe:hover:border-violet-300/70 motion-safe:hover:shadow-xl motion-safe:hover:shadow-violet-500/5 dark:border-zinc-800 dark:bg-zinc-900/55 dark:motion-safe:hover:border-violet-500/35"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/65 shadow-sm transition-colors duration-200 hover:border-zinc-400 motion-reduce:transition-none dark:border-zinc-800 dark:bg-zinc-900/55 dark:hover:border-zinc-600"
     >
       <ProjectVisual project={project} />
       <div className="flex flex-1 flex-col p-6 sm:p-7">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-violet-700 dark:border-violet-500/25 dark:bg-violet-500/10 dark:text-violet-300">
-            <span aria-hidden className="size-1.5 rounded-full bg-violet-500" />
+          <span className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-300">
+            <span aria-hidden className="size-1.5 rounded-full bg-zinc-400" />
             {project.status}
           </span>
           <span className="text-xs text-zinc-500 dark:text-zinc-400">
@@ -125,10 +124,10 @@ function ProjectRailCard({ project }: { project: Project }) {
         >
           {project.name}
         </h3>
-        <p className="mt-2 font-mono text-xs uppercase tracking-[0.16em] text-violet-600 dark:text-violet-400">
+        <p className="mt-2 font-mono text-xs uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
           {project.role}
         </p>
-        <p className="mt-4 flex-1 text-sm leading-6 text-zinc-600 sm:text-base sm:leading-7 dark:text-zinc-300">
+        <p className="mt-4 flex-1 text-base leading-7 text-zinc-600 dark:text-zinc-300">
           {project.summary}
         </p>
 
@@ -172,6 +171,20 @@ export function ProjectRail({ projects }: ProjectRailProps) {
     canScrollForward: projects.length > 1,
   });
 
+  useEffect(() => {
+    const rail = railRef.current;
+
+    if (!rail) return;
+
+    const observer = new ResizeObserver(() => {
+      setScrollState(getScrollState(rail));
+    });
+
+    observer.observe(rail);
+
+    return () => observer.disconnect();
+  }, [projects.length]);
+
   const scrollByCard = (direction: -1 | 1) => {
     const rail = railRef.current;
     const card = rail?.firstElementChild;
@@ -194,11 +207,7 @@ export function ProjectRail({ projects }: ProjectRailProps) {
 
     if (!rail) return;
 
-    const nextState = {
-      canScrollBack: rail.scrollLeft > 2,
-      canScrollForward:
-        rail.scrollLeft < rail.scrollWidth - rail.clientWidth - 2,
-    };
+    const nextState = getScrollState(rail);
 
     setScrollState((currentState) =>
       currentState.canScrollBack === nextState.canScrollBack &&
@@ -210,7 +219,7 @@ export function ProjectRail({ projects }: ProjectRailProps) {
 
   return (
     <section aria-labelledby="project-rail-heading" className="pt-20 sm:pt-24" id="selected-projects">
-      <div className="mx-auto flex w-full max-w-6xl flex-col justify-between gap-6 sm:flex-row sm:items-end">
+      <div className="mx-auto flex w-full max-w-6xl flex-col justify-between gap-6 lg:flex-row lg:items-end">
         <div className="max-w-2xl">
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.24em] text-violet-600 dark:text-violet-400">
             Selected projects
@@ -223,9 +232,9 @@ export function ProjectRail({ projects }: ProjectRailProps) {
           </h2>
         </div>
 
-        <div className="flex items-center justify-between gap-5 sm:justify-end">
+        <div className="flex shrink-0 items-center justify-between gap-5 lg:justify-end">
           <Link
-            className="text-sm font-semibold text-violet-600 underline decoration-violet-300 underline-offset-4 hover:text-violet-700 dark:text-violet-400 dark:decoration-violet-700"
+            className="shrink-0 whitespace-nowrap text-sm font-semibold text-violet-600 underline decoration-violet-300 underline-offset-4 hover:text-violet-700 dark:text-violet-400 dark:decoration-violet-700"
             href="/projects"
           >
             View all projects
@@ -260,7 +269,7 @@ export function ProjectRail({ projects }: ProjectRailProps) {
         ref={railRef}
         aria-describedby="project-rail-instructions"
         aria-label="Projects"
-        className="project-rail-track mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-5 focus-visible:rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-500 sm:mt-12 sm:gap-6"
+        className="project-rail-track mt-10 flex snap-x snap-proximity gap-5 overflow-x-auto overscroll-x-contain pb-5 focus-visible:rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-500 sm:mt-12 sm:gap-6"
         tabIndex={0}
         onScroll={handleScroll}
       >

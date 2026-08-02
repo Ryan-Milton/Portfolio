@@ -18,7 +18,7 @@ const socialLinks = [
 export function Footer() {
   return (
     <footer className="mt-24 w-full border-t border-zinc-200 px-6 pb-8 pt-10 dark:border-zinc-800">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <nav aria-label="Footer">
             <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
@@ -47,7 +47,7 @@ export function Footer() {
                 <li key={link.label}>
                   <TrackedLink
                     aria-label={`${link.label} (opens in a new tab)`}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full text-zinc-400 outline-none transition-colors hover:bg-zinc-100 hover:text-violet-600 focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none dark:hover:bg-zinc-900 dark:hover:text-violet-400"
+                    className="inline-flex size-11 items-center justify-center rounded-full text-zinc-400 outline-none transition-colors hover:bg-zinc-100 hover:text-violet-600 focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none dark:hover:bg-zinc-900 dark:hover:text-violet-400"
                     event="social_link_clicked"
                     href={link.href}
                     properties={{ network: link.label.toLowerCase() }}
@@ -76,7 +76,10 @@ export function Footer() {
         <div className="mt-8 border-t border-zinc-100 pt-6 dark:border-zinc-800">
           <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-zinc-500 dark:text-zinc-400">
             <p>&copy; {new Date().getFullYear()} Ryan Milton. All rights reserved.</p>
-            <Link className="hover:text-violet-600 dark:hover:text-violet-400" href="/privacy">
+            <Link
+              className="rounded-sm outline-none hover:text-violet-600 focus-visible:ring-2 focus-visible:ring-violet-500 dark:hover:text-violet-400"
+              href="/privacy"
+            >
               Privacy
             </Link>
           </div>

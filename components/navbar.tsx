@@ -70,7 +70,7 @@ export const Navbar = () => {
                   >
                     {item.label}
                     {active && (
-                      <span className="absolute inset-x-0 -bottom-1 h-px bg-gradient-to-r from-transparent via-violet-500 to-transparent" />
+                      <span className="absolute inset-x-0 -bottom-1 h-px bg-violet-500" />
                     )}
                   </NextLink>
                 </li>

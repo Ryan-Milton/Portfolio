@@ -53,7 +53,7 @@ export default function ProjectCard({
   return (
     <article aria-labelledby={headingId} id={project.slug}>
       <Card.Root
-        className="group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/55 p-0 shadow-sm transition-[border-color,box-shadow,transform] duration-300 motion-reduce:transition-none motion-safe:hover:-translate-y-0.5 motion-safe:hover:border-violet-300/70 motion-safe:hover:shadow-xl motion-safe:hover:shadow-violet-500/5 dark:border-zinc-800 dark:bg-zinc-900/45 dark:motion-safe:hover:border-violet-500/35"
+        className="group overflow-hidden rounded-2xl border border-zinc-200/80 bg-white/55 p-0 shadow-sm transition-colors duration-200 hover:border-zinc-400 motion-reduce:transition-none dark:border-zinc-800 dark:bg-zinc-900/45 dark:hover:border-zinc-600"
         variant="default"
       >
         <div
@@ -70,21 +70,12 @@ export default function ProjectCard({
               <Image
                 fill
                 alt={project.media.alt}
-                className="object-cover opacity-75 transition-transform duration-700 motion-reduce:transition-none motion-safe:group-hover:scale-[1.02]"
+                className="object-cover opacity-75"
                 sizes="(min-width: 1024px) 42vw, 100vw"
                 src={project.media.src}
               />
             ) : (
-              <>
-                <div
-                  aria-hidden
-                  className="absolute -right-24 -top-28 size-72 rounded-full bg-violet-500/25 blur-3xl transition-opacity duration-500 motion-reduce:transition-none group-hover:opacity-80"
-                />
-                <div
-                  aria-hidden
-                  className="absolute -bottom-20 -left-16 size-56 rounded-full bg-violet-800/20 blur-3xl"
-                />
-              </>
+              <div aria-hidden className="absolute inset-0 bg-zinc-950" />
             )}
 
             <div className="relative flex h-full min-h-60 flex-col justify-between gap-10">
@@ -92,7 +83,7 @@ export default function ProjectCard({
                 <span className="font-mono text-[0.68rem] uppercase tracking-[0.22em] text-violet-200">
                   {project.featured ? "Featured system" : "Selected build"}
                 </span>
-                <span aria-hidden className="font-mono text-xs text-zinc-600">
+                <span aria-hidden className="font-mono text-xs text-zinc-400">
                   /{project.slug}
                 </span>
               </div>
@@ -105,7 +96,7 @@ export default function ProjectCard({
                   {architecture.map((step, index) => (
                     <li
                       key={step}
-                      className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.045] px-3 py-2.5 backdrop-blur-sm"
+                      className="flex items-center gap-3 border-t border-white/15 px-1 py-2.5"
                     >
                       <span className="font-mono text-[0.65rem] text-violet-300">
                         {String(index + 1).padStart(2, "0")}
@@ -114,7 +105,7 @@ export default function ProjectCard({
                       {index < architecture.length - 1 && (
                         <span
                           aria-hidden
-                          className="ml-auto text-xs text-zinc-600"
+                          className="ml-auto text-xs text-zinc-400"
                         >
                           &darr;
                         </span>
@@ -135,7 +126,7 @@ export default function ProjectCard({
                 </div>
               )}
 
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-500">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-zinc-400">
                 {project.techStack.slice(0, 3).join(" / ")}
               </p>
             </div>
@@ -144,10 +135,10 @@ export default function ProjectCard({
           <div className="flex min-w-0 flex-col px-6 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-10">
             <Card.Header className="block p-0">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-violet-700 dark:border-violet-500/25 dark:bg-violet-500/10 dark:text-violet-300">
+                <span className="inline-flex items-center gap-2 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-zinc-600 dark:text-zinc-300">
                   <span
                     aria-hidden
-                    className="size-1.5 rounded-full bg-violet-500"
+                    className="size-1.5 rounded-full bg-zinc-400"
                   />
                   {project.status}
                 </span>
@@ -161,7 +152,7 @@ export default function ProjectCard({
               >
                 {project.name}
               </Heading>
-              <p className="mt-2 font-mono text-xs uppercase tracking-[0.16em] text-violet-600 dark:text-violet-400">
+              <p className="mt-2 font-mono text-xs uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
                 {project.role}
               </p>
               <Card.Description className="mt-5 max-w-2xl text-base leading-7 text-zinc-600 dark:text-zinc-300">
@@ -216,11 +207,6 @@ export default function ProjectCard({
                 >
                   <ProjectLinkIcon type={link.type} />
                   {link.label}
-                  <FontAwesomeIcon
-                    aria-hidden
-                    className="size-2.5 text-zinc-400"
-                    icon={faArrowUpRightFromSquare}
-                  />
                 </TrackedLink>
               ))}
             </Card.Footer>

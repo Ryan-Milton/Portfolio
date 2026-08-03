@@ -70,15 +70,15 @@ export function VideoEmbed({ poster, title, url }: VideoEmbedProps) {
               <Image
                 fill
                 alt=""
-                className="object-cover opacity-65 transition duration-300 group-hover:scale-[1.01] group-hover:opacity-75 motion-reduce:transition-none"
+                className="object-cover opacity-65 transition-opacity duration-[var(--duration-short)] group-hover:opacity-75 motion-reduce:transition-none"
                 sizes="(max-width: 768px) 100vw, 720px"
                 src={poster}
               />
             )}
-            <span className="relative flex flex-col items-center gap-3 rounded-xl bg-zinc-950/80 px-5 py-4 backdrop-blur-sm">
+            <span className="relative flex flex-col items-center gap-3 border border-white/20 bg-zinc-950/90 px-5 py-4">
               <span
                 aria-hidden
-                className="flex size-12 items-center justify-center rounded-full bg-violet-600 text-xl shadow-lg"
+                className="flex size-12 items-center justify-center bg-violet-600 text-xl"
               >
                 &#9654;
               </span>

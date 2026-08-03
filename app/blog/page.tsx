@@ -3,8 +3,6 @@ import Link from "next/link";
 
 import { getAllPosts } from "@/lib/blog";
 import PostCard from "@/components/blogPostCard";
-import { AnimatedGrid, AnimatedGridItem } from "@/components/animatedGrid";
-import { FadeIn } from "@/components/motion";
 
 export const metadata: Metadata = {
   title: "Devlog",
@@ -32,26 +30,27 @@ export default function BlogPage() {
   const posts = getAllPosts();
 
   return (
-    <div>
-      <FadeIn>
+    <div className="pb-12 sm:pb-20">
+      <header className="grid gap-5 border-b border-zinc-200 pb-10 sm:grid-cols-[7rem_minmax(0,1fr)] dark:border-zinc-800">
+        <p className="font-mono text-xs text-violet-600 dark:text-violet-400">
+          LOG / CURRENT
+        </p>
         <div className="max-w-2xl">
-          <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
+          <h1 className="text-4xl font-bold tracking-[-0.035em] text-zinc-800 sm:text-5xl dark:text-zinc-100">
             Devlog
           </h1>
           <p className="mt-6 text-zinc-600 dark:text-zinc-400">
-            Development notes, release updates, and project walkthroughs.
+            Dated notes from active builds, major pull requests, and release work.
           </p>
         </div>
-      </FadeIn>
+      </header>
 
-      <AnimatedGrid className="mt-10 flex flex-col gap-6 border-t border-zinc-300 pt-10 dark:border-zinc-700">
+      <div>
         {posts.map((post) => (
-          <AnimatedGridItem key={post.slug}>
-            <PostCard headingLevel={2} post={post} />
-          </AnimatedGridItem>
+          <PostCard key={post.slug} headingLevel={2} post={post} />
         ))}
-      </AnimatedGrid>
-      <p className="mt-10 text-sm text-zinc-600 dark:text-zinc-400">
+      </div>
+      <p className="mt-8 border-t border-zinc-200 pt-6 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-400">
         Looking for older writing?{" "}
         <Link
           className="inline-block whitespace-nowrap font-medium text-violet-600 dark:text-violet-400"

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote, type MDXRemoteProps } from "next-mdx-remote/rsc";
 
@@ -93,11 +94,17 @@ export default async function BlogPost({ params }: BlogPostProps) {
   };
 
   return (
-    <article className="container mx-auto max-w-3xl py-8">
+    <article className="mx-auto max-w-3xl py-8 sm:py-12">
       <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
-      <header className="mb-8">
+      <header className="mb-10 border-b border-zinc-200 pb-8 dark:border-zinc-800">
+        <Link
+          className="mb-8 inline-block whitespace-nowrap font-mono text-[0.68rem] font-bold uppercase tracking-[0.1em] text-zinc-500 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:decoration-zinc-700 dark:hover:text-violet-400"
+          href="/blog"
+        >
+          {"\u2190"} Development log
+        </Link>
         {post.image && !post.image.startsWith("http") && (
-          <div className="mb-6 overflow-hidden rounded-xl">
+          <div className="mb-8 overflow-hidden border border-zinc-200 dark:border-zinc-800">
             <Image
               priority
               alt={post.title}
@@ -109,7 +116,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
             />
           </div>
         )}
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-800 sm:text-4xl dark:text-zinc-100">
+        <h1 className="text-4xl font-bold tracking-[-0.035em] text-zinc-800 sm:text-5xl dark:text-zinc-100">
           {post.title}
         </h1>
         <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
@@ -140,12 +147,9 @@ export default async function BlogPost({ params }: BlogPostProps) {
           )}
         </div>
         {post.tags && post.tags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[0.68rem] text-zinc-500 dark:text-zinc-400">
             {post.tags.map((tag) => (
-              <span
-                key={tag}
-                className="rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400"
-              >
+              <span key={tag}>
                 {tag}
               </span>
             ))}

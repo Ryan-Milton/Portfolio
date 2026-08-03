@@ -1,3 +1,4 @@
+/* Hallmark · genre: technical-editorial · macrostructure: Index-First / Catalogue / Long Document · design-system: design.md · nav: N9 · footer: Ft4 · contrast: AA */
 @import "tailwindcss";
 @import "@heroui/styles";
 @plugin "@tailwindcss/typography";
@@ -51,8 +52,8 @@
   --color-zinc-950: var(--color-ink);
   --color-violet-300: var(--color-accent);
   --color-violet-400: var(--color-accent);
-  --color-violet-500: var(--color-accent);
-  --color-violet-600: var(--color-accent);
+  --color-violet-500: var(--color-focus);
+  --color-violet-600: var(--color-focus);
   --color-violet-700: var(--color-focus);
   color-scheme: light;
 }
@@ -95,6 +96,12 @@ h1,
 h2 {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+a:focus-visible {
+  border-radius: var(--radius-control);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
 }
 
 .site-primary-button {

@@ -17,6 +17,8 @@ export interface ProjectMedia {
 
 export interface Project {
   architecture?: string[];
+  category: string;
+  constraint: string;
   featured: boolean;
   highlights: string[];
   links: ProjectLink[];
@@ -38,6 +40,8 @@ export const projects: Project[] = [
       "Logical E2EE sync",
       "Desktop + iOS",
     ],
+    category: "Local-first knowledge",
+    constraint: "Portable data without surrendering privacy.",
     featured: true,
     highlights: [
       "Early access desktop build available now",
@@ -74,6 +78,8 @@ export const projects: Project[] = [
       "WebSocket stream",
       "Zustand + Mapbox",
     ],
+    category: "Geospatial intelligence",
+    constraint: "Normalize live public data without hiding source quality.",
     featured: false,
     highlights: [
       "15+ operational live data sources",
@@ -119,6 +125,9 @@ export const projects: Project[] = [
       "Tauri + Rust",
       "React HUD",
     ],
+    category: "Hardware-aware navigation",
+    constraint:
+      "Work offline on a handheld Linux computer with a USB GNSS receiver.",
     featured: false,
     highlights: [
       "Physical GNSS input validated on a laptop",
@@ -149,6 +158,8 @@ export const projects: Project[] = [
     ],
   },
   {
+    category: "Native macOS utility",
+    constraint: "Preserve rich clipboard data while keeping it local and encrypted.",
     featured: false,
     highlights: [
       "Designed for greater control over clipboard history",

@@ -1,9 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { faBriefcase, faDownload } from "@fortawesome/free-solid-svg-icons";
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { buttonVariants, Card } from "@heroui/react";
 import Image, { type ImageProps } from "next/image";
 
 import Anduril from "@/assets/Anduril Logo.png";
@@ -67,27 +66,27 @@ export function hasResume() {
 
 function RoleItem({ role }: { role: Role }) {
   return (
-    <li className="flex gap-4">
-      <div className="relative mt-1 flex size-10 flex-none items-center justify-center overflow-hidden rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/10 dark:bg-zinc-800 dark:ring-zinc-700">
+    <li className="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-3 border-b border-zinc-200 py-4 last:border-b-0 dark:border-zinc-800">
+      <div className="relative flex size-8 flex-none items-center justify-center overflow-hidden border border-zinc-200 bg-white dark:border-zinc-700 dark:bg-zinc-800">
         {role.logo ? (
           <Image
             alt=""
-            className="rounded-full object-contain"
-            height={40}
+            className="h-auto w-full object-contain"
+            height={32}
             src={role.logo}
-            width={40}
+            width={32}
           />
         ) : (
           <span
             aria-hidden
-            className="text-sm font-bold text-[#0866ff] dark:text-[#8ab4ff]"
+            className="text-[0.58rem] font-bold text-zinc-700 dark:text-zinc-200"
           >
             Meta
           </span>
         )}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
           <div>
             <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               {role.company}
@@ -98,7 +97,7 @@ function RoleItem({ role }: { role: Role }) {
           </div>
           <p
             aria-label={`${role.start.label} until ${role.end.label}`}
-            className="text-xs text-zinc-500 dark:text-zinc-400"
+            className="whitespace-nowrap font-mono text-[0.68rem] uppercase tracking-[0.06em] text-zinc-500 dark:text-zinc-400"
           >
             <time dateTime={role.start.dateTime}>{role.start.label}</time>
             <span aria-hidden> - </span>
@@ -118,24 +117,29 @@ export default function Resume() {
   const resumeAvailable = hasResume();
 
   return (
-    <Card.Root className="rounded-2xl border border-zinc-200 bg-white/50 p-0 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/35">
-      <Card.Header className="p-6 pb-0">
-        <Card.Title className="flex items-center text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-          <FontAwesomeIcon aria-hidden className="size-5" icon={faBriefcase} />
-          <span className="ml-3">Selected experience</span>
-        </Card.Title>
-      </Card.Header>
-      <Card.Content className="p-6">
-        <ol className="space-y-5">
-          {roles.map((role) => (
-            <RoleItem key={`${role.company}-${role.start.dateTime}`} role={role} />
-          ))}
-        </ol>
-      </Card.Content>
+    <section aria-labelledby="experience-heading">
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <p className="font-mono text-[0.65rem] font-bold uppercase tracking-[0.18em] text-violet-600 dark:text-violet-400">
+            03 / Work record
+          </p>
+          <h2
+            className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100"
+            id="experience-heading"
+          >
+            Selected experience
+          </h2>
+        </div>
+      </div>
+      <ol className="mt-6 border-y border-zinc-200 dark:border-zinc-800">
+        {roles.map((role) => (
+          <RoleItem key={`${role.company}-${role.start.dateTime}`} role={role} />
+        ))}
+      </ol>
       {resumeAvailable && (
-        <Card.Footer className="border-t border-zinc-200 p-5 dark:border-zinc-800">
+        <div className="mt-5">
           <TrackedLink
-            className={buttonVariants({ fullWidth: true, variant: "secondary" })}
+            className="inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-sm font-bold text-zinc-900 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-100 dark:decoration-zinc-700 dark:hover:text-violet-400"
             download="Ryan_Milton_Resume.pdf"
             event="resume_downloaded"
             href="/resume.pdf"
@@ -144,8 +148,8 @@ export default function Resume() {
             Download resume
             <FontAwesomeIcon aria-hidden className="size-4" icon={faDownload} />
           </TrackedLink>
-        </Card.Footer>
+        </div>
       )}
-    </Card.Root>
+    </section>
   );
 }

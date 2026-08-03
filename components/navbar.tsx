@@ -32,27 +32,30 @@ export const Navbar = () => {
     pathname === href || (href !== "/" && pathname.startsWith(`${href}/`));
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200/70 bg-zinc-50/80 backdrop-blur-md dark:border-zinc-800/70 dark:bg-zinc-950/80">
+    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-zinc-50/95 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-950/95">
       <nav
         aria-label="Primary"
-        className="mx-auto max-w-6xl px-6 min-[1200px]:px-0"
+        className="mx-auto max-w-[88rem] px-6 lg:px-10"
       >
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-[4.5rem] items-center justify-between">
           <NextLink
             aria-current={pathname === "/" ? "page" : undefined}
             aria-label="Ryan Milton, home"
-            className="rounded-full outline-none ring-violet-500 transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-50 motion-reduce:transition-none dark:focus-visible:ring-offset-zinc-950"
+            className="flex items-baseline gap-3 rounded-sm outline-none transition-colors hover:text-violet-600 focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none dark:hover:text-violet-400"
             href="/"
           >
+            <span className="text-sm font-bold uppercase tracking-[0.08em]">
+              Ryan Milton
+            </span>
             <span
-              aria-hidden="true"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-900 text-xs font-semibold tracking-tight text-zinc-50 dark:bg-zinc-100 dark:text-zinc-950"
+              aria-hidden
+              className="hidden font-mono text-[0.65rem] uppercase tracking-[0.16em] text-zinc-500 sm:inline"
             >
-              RM
+              / Product engineer
             </span>
           </NextLink>
 
-          <ul className="hidden items-center gap-8 rounded-full bg-zinc-200/80 px-6 py-2 backdrop-blur-sm md:flex dark:bg-zinc-900/80">
+          <ul className="hidden items-center gap-7 md:flex">
             {siteConfig.navItems.map((item) => {
               const active = isActive(item.href);
 
@@ -61,7 +64,7 @@ export const Navbar = () => {
                   <NextLink
                     aria-current={active ? "page" : undefined}
                     className={clsx(
-                      "relative rounded-sm text-sm font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none",
+                      "relative rounded-sm font-mono text-xs font-bold uppercase tracking-[0.12em] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none",
                       active
                         ? "text-violet-600 dark:text-violet-400"
                         : "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white",
@@ -70,7 +73,7 @@ export const Navbar = () => {
                   >
                     {item.label}
                     {active && (
-                      <span className="absolute inset-x-0 -bottom-1 h-px bg-violet-500" />
+                      <span className="absolute -left-3 top-1/2 size-1 -translate-y-1/2 bg-violet-500" />
                     )}
                   </NextLink>
                 </li>
@@ -126,7 +129,7 @@ export const Navbar = () => {
 
         {isMenuOpen && (
           <ul
-            className="space-y-1 border-t border-zinc-200/70 py-3 md:hidden dark:border-zinc-800/70"
+            className="space-y-1 border-t border-zinc-200 py-3 md:hidden dark:border-zinc-800"
             id="mobile-navigation"
           >
             {siteConfig.navMenuItems.map((item) => {
@@ -137,7 +140,7 @@ export const Navbar = () => {
                   <NextLink
                     aria-current={active ? "page" : undefined}
                     className={clsx(
-                      "block rounded-lg px-3 py-2.5 text-base font-medium outline-none transition-colors focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none",
+                      "block rounded-sm px-3 py-2.5 font-mono text-sm font-bold uppercase tracking-[0.1em] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none",
                       active
                         ? "bg-violet-500/10 text-violet-600 dark:text-violet-400"
                         : "text-zinc-700 hover:bg-zinc-200/70 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-zinc-900 dark:hover:text-white",

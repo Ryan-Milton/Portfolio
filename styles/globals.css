@@ -7,13 +7,76 @@
 @theme inline {
   --font-sans: var(--font-ubuntu);
   --font-mono: var(--font-ubuntu-mono);
+  --color-field-paper: var(--color-paper);
+  --color-field-paper-2: var(--color-paper-2);
+  --color-field-ink: var(--color-ink);
+  --color-field-ink-2: var(--color-ink-2);
+  --color-field-muted: var(--color-muted);
+  --color-field-rule: var(--color-rule);
+  --color-field-accent: var(--color-accent);
+  --color-field-focus: var(--color-focus);
 }
 
 :root {
+  --color-paper: oklch(96% 0.008 245);
+  --color-paper-2: oklch(92% 0.01 245);
+  --color-ink: oklch(18% 0.018 245);
+  --color-ink-2: oklch(34% 0.016 245);
+  --color-muted: oklch(48% 0.014 245);
+  --color-rule: oklch(78% 0.012 245);
+  --color-accent: oklch(61% 0.17 45);
+  --color-focus: oklch(55% 0.19 45);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-short: 160ms;
+  --radius-control: 0.375rem;
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 7rem;
+  --color-zinc-50: var(--color-paper);
+  --color-zinc-100: var(--color-paper-2);
+  --color-zinc-200: var(--color-rule);
+  --color-zinc-300: var(--color-rule);
+  --color-zinc-400: var(--color-muted);
+  --color-zinc-500: var(--color-muted);
+  --color-zinc-600: var(--color-ink-2);
+  --color-zinc-700: var(--color-ink-2);
+  --color-zinc-800: var(--color-ink);
+  --color-zinc-900: var(--color-ink);
+  --color-zinc-950: var(--color-ink);
+  --color-violet-300: var(--color-accent);
+  --color-violet-400: var(--color-accent);
+  --color-violet-500: var(--color-accent);
+  --color-violet-600: var(--color-accent);
+  --color-violet-700: var(--color-focus);
   color-scheme: light;
 }
 
 .dark {
+  --color-paper: oklch(15% 0.012 245);
+  --color-paper-2: oklch(20% 0.014 245);
+  --color-ink: oklch(93% 0.008 245);
+  --color-ink-2: oklch(78% 0.01 245);
+  --color-muted: oklch(67% 0.012 245);
+  --color-rule: oklch(32% 0.014 245);
+  --color-accent: oklch(72% 0.15 55);
+  --color-focus: oklch(78% 0.15 55);
+  --color-zinc-50: var(--color-ink);
+  --color-zinc-100: var(--color-ink);
+  --color-zinc-200: var(--color-ink-2);
+  --color-zinc-300: var(--color-ink-2);
+  --color-zinc-400: var(--color-muted);
+  --color-zinc-500: var(--color-muted);
+  --color-zinc-600: var(--color-rule);
+  --color-zinc-700: var(--color-rule);
+  --color-zinc-800: var(--color-paper-2);
+  --color-zinc-900: var(--color-paper-2);
+  --color-zinc-950: var(--color-paper);
   color-scheme: dark;
 }
 
@@ -23,6 +86,8 @@ body {
 }
 
 body {
+  background: var(--color-paper);
+  color: var(--color-ink);
   margin: 0;
 }
 
@@ -33,12 +98,13 @@ h2 {
 }
 
 .site-primary-button {
-  background-color: #6d28d9 !important;
-  color: #fff !important;
+  background-color: var(--color-ink) !important;
+  border-radius: var(--radius-control) !important;
+  color: var(--color-paper) !important;
 }
 
 .site-primary-button:hover {
-  background-color: #5b21b6 !important;
+  background-color: var(--color-accent) !important;
 }
 
 .project-rail-track {
@@ -49,19 +115,6 @@ h2 {
   scrollbar-width: thin;
 }
 
-/* Background atmosphere */
-.bg-atmosphere {
-  position: relative;
-}
-.bg-atmosphere::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
 /* rehype-pretty-code: dual theme support */
 [data-theme="light"] {
   display: block;
@@ -111,6 +164,13 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
   html {
     scroll-behavior: auto;
   }

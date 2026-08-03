@@ -63,8 +63,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: "light dark",
   themeColor: [
-    { color: "#fafafa", media: "(prefers-color-scheme: light)" },
-    { color: "#09090b", media: "(prefers-color-scheme: dark)" },
+    { color: "#eef0f3", media: "(prefers-color-scheme: light)" },
+    { color: "#15191f", media: "(prefers-color-scheme: dark)" },
   ],
 };
 
@@ -128,7 +128,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </a>
             <Navbar />
             <main
-              className="bg-atmosphere container mx-auto w-full max-w-7xl flex-grow bg-zinc-50 px-6 dark:bg-zinc-950"
+              className="mx-auto w-full max-w-[88rem] flex-grow bg-zinc-50 px-6 lg:px-10 dark:bg-zinc-950"
               id="main-content"
             >
               <PageTransition>{children}</PageTransition>

@@ -73,7 +73,7 @@ export function ProjectCaseFile({ index, posts, project }: ProjectCaseFileProps)
             </figure>
           ) : (
             <div className="border border-zinc-200 bg-zinc-950 p-6 text-zinc-100 dark:border-zinc-800">
-              <p className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-zinc-400">
+              <p className="font-mono text-[0.65rem] uppercase tracking-[0.16em] text-zinc-300">
                 Constraint
               </p>
               <p className="mt-6 text-2xl font-bold tracking-tight">

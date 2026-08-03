@@ -40,7 +40,7 @@ function ProjectProof({
         </div>
       ) : (
         <div className="border-b border-zinc-200 bg-zinc-950 p-5 text-zinc-100 dark:border-zinc-800 sm:p-6">
-          <p className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-zinc-400">
+          <p className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-zinc-300">
             System path
           </p>
           {project.architecture ? (

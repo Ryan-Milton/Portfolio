@@ -45,7 +45,7 @@ Light:
 - `--color-muted`: oklch(48% 0.014 245)
 - `--color-rule`: oklch(78% 0.012 245)
 - `--color-accent`: oklch(61% 0.170 45)
-- `--color-focus`: oklch(55% 0.190 45)
+- `--color-focus`: oklch(50% 0.190 45)
 
 Dark:
 

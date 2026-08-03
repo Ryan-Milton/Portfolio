@@ -45,7 +45,7 @@ export default function BlogArchivePage() {
             context and understanding available when they were published.
           </p>
           <Link
-            className="mt-5 inline-block whitespace-nowrap text-sm font-bold text-violet-600 underline decoration-zinc-300 underline-offset-4 dark:text-violet-400 dark:decoration-zinc-700"
+            className="mt-5 inline-block whitespace-nowrap text-sm font-bold text-violet-600 underline decoration-zinc-300 underline-offset-2 dark:text-violet-400 dark:decoration-zinc-700"
             href="/blog"
           >
             {"\u2190"} Current entries

@@ -41,7 +41,7 @@ export default function Home() {
             software, native applications, real-time data, and hardware.
           </p>
           <Link
-            className="mt-8 inline-block whitespace-nowrap text-sm font-bold text-zinc-900 underline decoration-violet-500 decoration-2 underline-offset-4 hover:text-violet-600 dark:text-zinc-100 dark:hover:text-violet-400"
+            className="mt-8 inline-block whitespace-nowrap text-sm font-bold text-zinc-900 underline decoration-violet-500 decoration-2 underline-offset-2 hover:text-violet-600 dark:text-zinc-100 dark:hover:text-violet-400"
             href="#selected-projects"
           >
             Inspect the project register {"\u2193"}
@@ -75,7 +75,7 @@ export default function Home() {
             {publicProfiles.map((profile) => (
               <li key={profile.label}>
                 <TrackedLink
-                  className="whitespace-nowrap font-mono text-xs font-bold uppercase tracking-[0.08em] text-zinc-600 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
+                  className="whitespace-nowrap font-mono text-xs font-bold uppercase tracking-[0.08em] text-zinc-600 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
                   event="social_link_clicked"
                   href={profile.href}
                   properties={{ location: "homepage-record", network: profile.network }}
@@ -104,7 +104,7 @@ export default function Home() {
               </h2>
             </div>
             <Link
-              className="shrink-0 whitespace-nowrap font-mono text-xs font-bold uppercase tracking-[0.1em] text-zinc-600 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
+              className="shrink-0 whitespace-nowrap font-mono text-xs font-bold uppercase tracking-[0.1em] text-zinc-600 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
               href="/blog"
             >
               Full log {"\u2192"}
@@ -136,7 +136,7 @@ export default function Home() {
             the responsibility that comes with shipping dependable work.
           </p>
           <Link
-            className="mt-6 inline-block whitespace-nowrap text-sm font-bold text-zinc-900 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-100 dark:decoration-zinc-700 dark:hover:text-violet-400"
+            className="mt-6 inline-block whitespace-nowrap text-sm font-bold text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-100 dark:decoration-zinc-700 dark:hover:text-violet-400"
             href="/about"
           >
             Read the full record {"\u2192"}

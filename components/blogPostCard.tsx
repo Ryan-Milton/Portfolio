@@ -23,7 +23,11 @@ export default function PostCard({ headingLevel = 3, post }: PostCardProps) {
         <span className="mt-1 block">{post.project ?? "General"}</span>
       </div>
       <div className="min-w-0">
-        <header className={post.image ? "grid gap-5 sm:grid-cols-[1fr_8rem]" : undefined}>
+        <header
+          className={
+            post.image ? "grid gap-5 sm:grid-cols-[minmax(0,1fr)_8rem]" : undefined
+          }
+        >
           <div>
             <div className="mb-2 flex flex-wrap items-center gap-3 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-zinc-500 dark:text-zinc-400">
               <span>{post.format}</span>
@@ -32,7 +36,7 @@ export default function PostCard({ headingLevel = 3, post }: PostCardProps) {
             </div>
             <Heading className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
               <TrackedLink
-                className="underline decoration-transparent underline-offset-4 hover:text-violet-600 hover:decoration-violet-500"
+                className="underline decoration-transparent underline-offset-2 hover:text-violet-600 hover:decoration-violet-500"
                 event="devlog_opened"
                 href={`/blog/${post.slug}`}
                 properties={{ destination: "internal", slug: post.slug }}
@@ -79,7 +83,7 @@ export default function PostCard({ headingLevel = 3, post }: PostCardProps) {
             </TrackedLink>
           )}
           <TrackedLink
-            className="flex items-center gap-1 whitespace-nowrap text-sm font-bold text-zinc-700 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
+            className="flex items-center gap-1 whitespace-nowrap text-sm font-bold text-zinc-700 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
             event="devlog_opened"
             href={`/blog/${post.slug}`}
             properties={{ destination: "internal", slug: post.slug }}

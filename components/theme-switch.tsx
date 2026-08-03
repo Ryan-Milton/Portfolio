@@ -16,7 +16,7 @@ export const ThemeSwitch = ({ className }: ThemeSwitchProps) => {
     <button
       aria-label="Toggle color theme"
       className={clsx(
-        "inline-flex h-10 w-10 items-center justify-center rounded-full text-zinc-600 outline-none transition-colors hover:bg-zinc-200 hover:text-violet-600 focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-violet-400",
+        "inline-flex size-11 items-center justify-center rounded-full text-zinc-600 outline-none transition-colors hover:bg-zinc-200 hover:text-violet-600 focus-visible:ring-2 focus-visible:ring-violet-500 active:translate-y-px motion-reduce:transition-none dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-violet-400",
         className,
       )}
       title="Toggle color theme"

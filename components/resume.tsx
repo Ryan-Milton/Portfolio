@@ -139,7 +139,7 @@ export default function Resume() {
       {resumeAvailable && (
         <div className="mt-5">
           <TrackedLink
-            className="inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-sm font-bold text-zinc-900 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-100 dark:decoration-zinc-700 dark:hover:text-violet-400"
+            className="inline-flex min-h-11 items-center gap-2 whitespace-nowrap text-sm font-bold text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-100 dark:decoration-zinc-700 dark:hover:text-violet-400"
             download="Ryan_Milton_Resume.pdf"
             event="resume_downloaded"
             href="/resume.pdf"

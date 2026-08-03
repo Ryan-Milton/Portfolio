@@ -1,4 +1,5 @@
-/* Hallmark · genre: technical-editorial · macrostructure: Index-First / Catalogue / Long Document · design-system: design.md · nav: N9 · footer: Ft4 · contrast: AA */
+/* Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 */
+/* Hallmark · genre: technical-editorial · macrostructure: Index-First / Catalogue / Long Document · design-system: design.md · designed-as-app · nav: N9 · footer: Ft4 · contrast: AA */
 @import "tailwindcss";
 @import "@heroui/styles";
 @plugin "@tailwindcss/typography";
@@ -15,6 +16,7 @@
   --color-field-muted: var(--color-muted);
   --color-field-rule: var(--color-rule);
   --color-field-accent: var(--color-accent);
+  --color-field-accent-ink: var(--color-accent-ink);
   --color-field-focus: var(--color-focus);
 }
 
@@ -26,10 +28,12 @@
   --color-muted: oklch(48% 0.014 245);
   --color-rule: oklch(78% 0.012 245);
   --color-accent: oklch(61% 0.17 45);
+  --color-accent-ink: var(--color-paper);
   --color-focus: oklch(50% 0.19 45);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-short: 160ms;
   --radius-control: 0.375rem;
+  --rule-hair: 1px;
   --space-3xs: 0.25rem;
   --space-2xs: 0.5rem;
   --space-xs: 0.75rem;
@@ -66,6 +70,7 @@
   --color-muted: oklch(67% 0.012 245);
   --color-rule: oklch(32% 0.014 245);
   --color-accent: oklch(72% 0.15 55);
+  --color-accent-ink: var(--color-paper);
   --color-focus: oklch(78% 0.15 55);
   --color-zinc-50: var(--color-ink);
   --color-zinc-100: var(--color-ink);
@@ -111,15 +116,12 @@ a:focus-visible {
 }
 
 .site-primary-button:hover {
-  background-color: var(--color-accent) !important;
+  background-color: var(--color-focus) !important;
+  color: var(--color-accent-ink) !important;
 }
 
-.project-rail-track {
-  --rail-gutter: max(0px, calc((100% - 72rem) / 2));
-  padding-inline: var(--rail-gutter);
-  scroll-padding-inline: var(--rail-gutter);
-  scrollbar-color: rgb(161 161 170 / 0.55) transparent;
-  scrollbar-width: thin;
+.site-primary-button:active {
+  transform: translateY(1px);
 }
 
 /* rehype-pretty-code: dual theme support */
@@ -139,15 +141,15 @@ a:focus-visible {
 /* rehype-pretty-code: line highlighting */
 [data-highlighted-line] {
   background-color: rgba(200, 200, 255, 0.1);
-  border-left: 2px solid rgb(99, 102, 241);
-  padding-left: calc(1rem - 2px);
+  border-left: var(--rule-hair) solid rgb(99, 102, 241);
+  padding-left: calc(var(--space-sm) - var(--rule-hair));
 }
 
 /* rehype-pretty-code: word highlighting */
 [data-highlighted-chars] {
   background-color: rgba(200, 200, 255, 0.15);
   border-radius: 0.25rem;
-  padding: 0.125rem 0.25rem;
+  padding: 0 var(--space-3xs);
 }
 
 /* Heading anchor links */
@@ -160,7 +162,7 @@ a:focus-visible {
   content: "#";
   position: absolute;
   left: -1.5em;
-  color: rgb(161, 161, 170);
+  color: var(--color-muted);
   font-weight: 400;
 }
 

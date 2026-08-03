@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <article className="mx-auto max-w-3xl py-16 sm:py-24">
+    <article className="mx-auto max-w-[62ch] py-16 sm:py-24">
       <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-violet-600 dark:text-violet-400">
         RECORD / PRIVACY
       </p>

@@ -175,7 +175,7 @@ export function ProjectCaseFile({ index, posts, project }: ProjectCaseFileProps)
                       {formatUtcDate(post.publishedAt, "short")}
                     </time>
                     <Link
-                      className="font-medium text-zinc-800 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-200 dark:decoration-zinc-700 dark:hover:text-violet-400"
+                      className="font-medium text-zinc-800 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-200 dark:decoration-zinc-700 dark:hover:text-violet-400"
                       href={`/blog/${post.slug}`}
                     >
                       {post.title}
@@ -190,7 +190,7 @@ export function ProjectCaseFile({ index, posts, project }: ProjectCaseFileProps)
             {project.links.map((link) => (
               <TrackedLink
                 key={link.href}
-                className="whitespace-nowrap text-sm font-bold text-zinc-900 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-100 dark:decoration-zinc-700 dark:hover:text-violet-400"
+                className="whitespace-nowrap text-sm font-bold text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-100 dark:decoration-zinc-700 dark:hover:text-violet-400"
                 event="project_link_clicked"
                 href={link.href}
                 properties={{ destination: link.type, project: project.slug }}

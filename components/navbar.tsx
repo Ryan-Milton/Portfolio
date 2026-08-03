@@ -90,7 +90,7 @@ export const Navbar = () => {
               aria-label={
                 isMenuOpen ? "Close navigation menu" : "Open navigation menu"
               }
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full text-zinc-600 outline-none transition-colors hover:bg-zinc-200 hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none md:hidden dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
+              className="inline-flex size-11 items-center justify-center rounded-full text-zinc-600 outline-none transition-colors hover:bg-zinc-200 hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-violet-500 active:translate-y-px motion-reduce:transition-none md:hidden dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"
               type="button"
               onClick={() => setIsMenuOpen((open) => !open)}
             >

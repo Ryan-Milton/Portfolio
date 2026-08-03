@@ -77,7 +77,7 @@ function ProjectProof({
           <p className="mt-5 border-t border-zinc-200 pt-4 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">
             Latest field note: {" "}
             <Link
-              className="font-medium text-violet-600 underline decoration-zinc-300 underline-offset-4 dark:text-violet-400 dark:decoration-zinc-700"
+              className="font-medium text-violet-600 underline decoration-zinc-300 underline-offset-2 dark:text-violet-400 dark:decoration-zinc-700"
               href={`/blog/${update.slug}`}
             >
               {update.title}
@@ -89,7 +89,7 @@ function ProjectProof({
         )}
         <div className="mt-5 flex flex-wrap gap-x-5 gap-y-3 border-t border-zinc-200 pt-4 dark:border-zinc-800">
           <Link
-            className="text-sm font-bold text-zinc-900 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-100 dark:decoration-zinc-700 dark:hover:text-violet-400"
+            className="text-sm font-bold text-zinc-900 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-100 dark:decoration-zinc-700 dark:hover:text-violet-400"
             href={`/projects#${project.slug}`}
           >
             Open case file {"\u2192"}
@@ -97,7 +97,7 @@ function ProjectProof({
           {project.links.map((link) => (
             <TrackedLink
               key={link.href}
-              className="text-sm font-medium text-zinc-600 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
+              className="text-sm font-medium text-zinc-600 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
               event="project_link_clicked"
               href={link.href}
               properties={{ destination: link.type, project: project.slug }}
@@ -135,7 +135,7 @@ export function ProjectRegister({ projects, updates }: ProjectRegisterProps) {
                 </h2>
               </div>
               <Link
-                className="shrink-0 whitespace-nowrap font-mono text-xs font-bold uppercase tracking-[0.1em] text-zinc-600 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
+                className="shrink-0 whitespace-nowrap font-mono text-xs font-bold uppercase tracking-[0.1em] text-zinc-600 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:text-zinc-300 dark:decoration-zinc-700 dark:hover:text-violet-400"
                 href="/projects"
               >
                 All case files {"\u2192"}
@@ -151,7 +151,7 @@ export function ProjectRegister({ projects, updates }: ProjectRegisterProps) {
                     <button
                       aria-controls="active-project-proof"
                       aria-pressed={active}
-                      className={`grid w-full grid-cols-[2.5rem_minmax(0,1fr)] gap-3 py-5 text-left outline-none transition-colors focus-visible:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500 motion-reduce:transition-none sm:grid-cols-[3rem_minmax(0,1fr)_11rem] ${
+                      className={`grid w-full grid-cols-[2.5rem_minmax(0,1fr)] gap-3 py-5 text-left outline-none transition-colors focus-visible:bg-zinc-100 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-violet-500 active:bg-zinc-200 motion-reduce:transition-none sm:grid-cols-[3rem_minmax(0,1fr)_11rem] dark:active:bg-zinc-800 ${
                         active ? "bg-zinc-100 dark:bg-zinc-900" : "hover:bg-zinc-100/60 dark:hover:bg-zinc-900/60"
                       }`}
                       type="button"

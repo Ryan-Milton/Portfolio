@@ -45,6 +45,7 @@ Light:
 - `--color-muted`: oklch(48% 0.014 245)
 - `--color-rule`: oklch(78% 0.012 245)
 - `--color-accent`: oklch(61% 0.170 45)
+- `--color-accent-ink`: var(--color-paper)
 - `--color-focus`: oklch(50% 0.190 45)
 
 Dark:
@@ -56,6 +57,7 @@ Dark:
 - `--color-muted`: oklch(67% 0.012 245)
 - `--color-rule`: oklch(32% 0.014 245)
 - `--color-accent`: oklch(72% 0.150 55)
+- `--color-accent-ink`: var(--color-paper)
 - `--color-focus`: oklch(78% 0.150 55)
 
 Accent use stays below five percent of a viewport. It marks actions, active records,

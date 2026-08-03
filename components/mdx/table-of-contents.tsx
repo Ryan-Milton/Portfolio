@@ -19,7 +19,7 @@ export function TableOfContents({ items }: TableOfContentsProps) {
         {items.map((item) => (
           <li key={item.id} className={item.level === 3 ? "pl-4" : ""}>
             <a
-              className="text-zinc-600 underline decoration-transparent underline-offset-4 transition-colors hover:text-violet-600 hover:decoration-violet-500 dark:text-zinc-300 dark:hover:text-violet-400"
+              className="text-zinc-600 underline decoration-transparent underline-offset-2 transition-colors hover:text-violet-600 hover:decoration-violet-500 dark:text-zinc-300 dark:hover:text-violet-400"
               href={`#${item.id}`}
             >
               {item.text}

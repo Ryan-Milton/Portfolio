@@ -94,11 +94,11 @@ export default async function BlogPost({ params }: BlogPostProps) {
   };
 
   return (
-    <article className="mx-auto max-w-3xl py-8 sm:py-12">
+    <article className="mx-auto max-w-[62ch] py-8 sm:py-12">
       <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
       <header className="mb-10 border-b border-zinc-200 pb-8 dark:border-zinc-800">
         <Link
-          className="mb-8 inline-block whitespace-nowrap font-mono text-[0.68rem] font-bold uppercase tracking-[0.1em] text-zinc-500 underline decoration-zinc-300 underline-offset-4 hover:text-violet-600 dark:decoration-zinc-700 dark:hover:text-violet-400"
+          className="mb-8 inline-block whitespace-nowrap font-mono text-[0.68rem] font-bold uppercase tracking-[0.1em] text-zinc-500 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:decoration-zinc-700 dark:hover:text-violet-400"
           href="/blog"
         >
           {"\u2190"} Development log

@@ -62,7 +62,7 @@ export function VideoEmbed({ poster, title, url }: VideoEmbedProps) {
         ) : (
           <button
             aria-label={`Load ${title ?? "video"} from ${providerLabel}`}
-            className="group absolute inset-0 flex h-full w-full items-center justify-center overflow-hidden text-white outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-violet-400"
+            className="group absolute inset-0 flex h-full w-full items-center justify-center overflow-hidden text-white outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-violet-400 active:opacity-90"
             type="button"
             onClick={() => setShouldLoad(true)}
           >

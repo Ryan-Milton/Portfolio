@@ -15,7 +15,7 @@ export function CodeBlock(props: CodeBlockProps) {
       )}
       <pre
         {...rest}
-        className="overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-4 text-sm dark:border-zinc-700 dark:bg-zinc-900"
+        className="overflow-x-auto rounded-sm border border-zinc-200 bg-zinc-50 p-4 text-sm dark:border-zinc-700 dark:bg-zinc-900"
       >
         {children}
       </pre>

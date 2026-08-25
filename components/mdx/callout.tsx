@@ -14,7 +14,7 @@ const styles: Record<string, string> = {
 export function Callout({ children, type = "note" }: CalloutProps) {
   return (
     <aside
-      className={`my-6 rounded-lg border-l-4 p-4 not-prose ${styles[type]}`}
+      className={`my-8 rounded-sm border-l-4 p-5 not-prose ${styles[type]}`}
       role="note"
     >
       <div className="mb-1 text-sm font-medium uppercase tracking-wide opacity-70">

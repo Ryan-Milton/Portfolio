@@ -18,14 +18,12 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <article className="mx-auto max-w-[62ch] py-16 sm:py-24">
-      <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-violet-600 dark:text-violet-400">
-        RECORD / PRIVACY
-      </p>
-      <h1 className="mt-4 border-b border-zinc-200 pb-8 text-4xl font-bold tracking-[-0.035em] text-zinc-900 sm:text-5xl dark:border-zinc-800 dark:text-zinc-50">
+    <article className="mx-auto max-w-[68ch] px-5 py-16 sm:px-8 sm:py-24">
+      <p className="eyebrow text-zinc-500 dark:text-zinc-400">Analytics disclosure</p>
+      <h1 className="section-title mt-6 border-b border-zinc-200 pb-10 text-zinc-950 dark:border-zinc-800 dark:text-white">
         Privacy
       </h1>
-      <div className="prose prose-zinc mt-8 max-w-none dark:prose-invert">
+      <div className="prose prose-zinc mt-10 max-w-none prose-headings:font-extrabold prose-headings:tracking-[-0.035em] prose-a:decoration-violet-500 dark:prose-invert">
         <p>
           This portfolio uses PostHog to understand aggregate traffic and which
           projects or development notes visitors choose to explore. PostHog runs

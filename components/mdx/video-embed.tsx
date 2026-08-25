@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Play } from "@phosphor-icons/react";
 import Image from "next/image";
 
 interface VideoEmbedProps {
@@ -49,7 +50,7 @@ export function VideoEmbed({ poster, title, url }: VideoEmbedProps) {
 
   return (
     <figure className="my-8">
-      <div className="relative aspect-video overflow-hidden rounded-lg border border-zinc-200 bg-zinc-950 dark:border-zinc-700">
+      <div className="relative aspect-video overflow-hidden rounded-sm border border-zinc-200 bg-zinc-950 dark:border-zinc-700">
         {shouldLoad ? (
           <iframe
             allowFullScreen
@@ -76,18 +77,15 @@ export function VideoEmbed({ poster, title, url }: VideoEmbedProps) {
               />
             )}
             <span className="relative flex flex-col items-center gap-3 border border-white/20 bg-zinc-950/90 px-5 py-4">
-              <span
-                aria-hidden
-                className="flex size-12 items-center justify-center bg-violet-600 text-xl"
-              >
-                &#9654;
+              <span aria-hidden className="flex size-12 items-center justify-center bg-violet-600 text-zinc-950">
+                <Play size={22} weight="fill" />
               </span>
               <span className="text-sm font-semibold">Load video from {providerLabel}</span>
             </span>
           </button>
         )}
       </div>
-      <figcaption className="mt-2 text-center text-sm text-zinc-500 dark:text-zinc-400">
+      <figcaption className="mt-3 text-left font-mono text-xs text-zinc-500 dark:text-zinc-400">
         {title ? `${title}. ` : ""}
         The third-party player loads only after activation.
       </figcaption>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ArrowLeft } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -94,80 +95,79 @@ export default async function BlogPost({ params }: BlogPostProps) {
   };
 
   return (
-    <article className="mx-auto max-w-[62ch] py-8 sm:py-12">
+    <article className="pb-16 sm:pb-24">
       <script type="application/ld+json">{JSON.stringify(articleSchema)}</script>
-      <header className="mb-10 border-b border-zinc-200 pb-8 dark:border-zinc-800">
-        <Link
-          className="mb-8 inline-block whitespace-nowrap font-mono text-[0.68rem] font-bold uppercase tracking-[0.1em] text-zinc-500 underline decoration-zinc-300 underline-offset-2 hover:text-violet-600 dark:decoration-zinc-700 dark:hover:text-violet-400"
-          href="/blog"
-        >
-          {"\u2190"} Development log
-        </Link>
-        {post.image && !post.image.startsWith("http") && (
-          <div className="mb-8 overflow-hidden border border-zinc-200 dark:border-zinc-800">
-            <Image
-              priority
-              alt={post.title}
-              className="w-full"
-              height={630}
-              sizes="(max-width: 768px) 100vw, 720px"
-              src={post.image}
-              width={1200}
-            />
+      <header className="border-b border-zinc-200 dark:border-zinc-800">
+        <div className="mx-auto max-w-[96rem] px-5 py-14 sm:px-8 sm:py-20 lg:px-12">
+          <Link
+            className="group inline-flex items-center gap-2 text-sm font-bold text-zinc-600 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+            href="/blog"
+          >
+            <ArrowLeft aria-hidden className="transition-transform group-hover:-translate-x-1 motion-reduce:transition-none" size={16} weight="bold" />
+            Development log
+          </Link>
+
+          <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-end">
+            <div>
+              <div className="flex flex-wrap gap-x-4 gap-y-2 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-zinc-500 dark:text-zinc-400">
+                {post.project && <span>{post.project}</span>}
+                <span>{post.format}</span>
+                {post.status === "archived" && <span>Archived</span>}
+              </div>
+              <h1 className="mt-5 max-w-[18ch] text-[clamp(3rem,7vw,7rem)] font-extrabold leading-[0.9] tracking-[-0.07em] text-zinc-950 dark:text-white">
+                {post.title}
+              </h1>
+              <p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-300">{post.summary}</p>
+            </div>
+
+            <div>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-zinc-500 dark:text-zinc-400">
+                <time dateTime={post.publishedAt}>{formatUtcDate(post.publishedAt)}</time>
+                {post.updatedAt && (
+                  <span>Updated <time dateTime={post.updatedAt}>{formatUtcDate(post.updatedAt)}</time></span>
+                )}
+                {post.format === "article" && <span>{readingTimeMinutes} min read</span>}
+              </div>
+              {post.tags && post.tags.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[0.65rem] text-zinc-500 dark:text-zinc-400">
+                  {post.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                </div>
+              )}
+            </div>
           </div>
-        )}
-        <h1 className="text-4xl font-bold tracking-[-0.035em] text-zinc-800 sm:text-5xl dark:text-zinc-100">
-          {post.title}
-        </h1>
-        <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-          {post.project && <span>{post.project}</span>}
-          <span>{post.format}</span>
-          {post.status === "archived" && <span>Archived</span>}
-        </div>
-        <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
-          <time dateTime={post.publishedAt}>
-            {formatUtcDate(post.publishedAt)}
-          </time>
-          {post.updatedAt && (
-            <>
-              <span aria-hidden="true">&middot;</span>
-              <span>
-                Updated{" "}
-                <time dateTime={post.updatedAt}>
-                  {formatUtcDate(post.updatedAt)}
-                </time>
-              </span>
-            </>
-          )}
-          {post.format === "article" && (
-            <>
-              <span aria-hidden="true">&middot;</span>
-              <span>{readingTimeMinutes} min read</span>
-            </>
+
+          {post.image && !post.image.startsWith("http") && (
+            <div className="media-frame mt-12 overflow-hidden">
+              <Image
+                priority
+                alt={post.title}
+                className="w-full"
+                height={630}
+                sizes="(max-width: 768px) 100vw, 1400px"
+                src={post.image}
+                width={1200}
+              />
+            </div>
           )}
         </div>
-        {post.tags && post.tags.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[0.68rem] text-zinc-500 dark:text-zinc-400">
-            {post.tags.map((tag) => (
-              <span key={tag}>
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
       </header>
-      <TableOfContents items={toc} />
-      <div className="prose prose-zinc max-w-none dark:prose-invert">
-        <MDXRemote
-          components={mdxComponents}
-          options={{
-            mdxOptions:
-              mdxOptions as NonNullable<
-                MDXRemoteProps["options"]
-              >["mdxOptions"],
-          }}
-          source={post.content}
-        />
+
+      <div className="mx-auto grid max-w-[96rem] gap-12 px-5 py-14 sm:px-8 sm:py-20 lg:grid-cols-[14rem_minmax(0,1fr)] lg:px-12">
+        <aside className="lg:sticky lg:top-28 lg:self-start">
+          <TableOfContents items={toc} />
+        </aside>
+        <div className="prose prose-zinc max-w-[62ch] prose-headings:font-extrabold prose-headings:tracking-[-0.035em] prose-a:decoration-violet-500 prose-a:decoration-2 prose-a:underline-offset-4 dark:prose-invert">
+          <MDXRemote
+            components={mdxComponents}
+            options={{
+              mdxOptions:
+                mdxOptions as NonNullable<
+                  MDXRemoteProps["options"]
+                >["mdxOptions"],
+            }}
+            source={post.content}
+          />
+        </div>
       </div>
     </article>
   );

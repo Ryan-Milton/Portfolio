@@ -6,7 +6,8 @@ Personal portfolio and development log for [Ryan Milton](https://ryguy.dev), a S
 
 - Next.js 16 App Router and React 19
 - TypeScript
-- HeroUI v3 and Tailwind CSS v4
+- Tailwind CSS v4 with a custom kinetic-editorial design system
+- Motion for scroll choreography and Phosphor for icons
 - File-based MDX rendered with `next-mdx-remote`
 - `next-themes` for light and dark modes
 - Anonymous, minimal PostHog analytics

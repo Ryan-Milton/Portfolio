@@ -8,9 +8,7 @@ const description =
   "Selected products by Ryan Milton: Knosys, Eagle Eye, SpeedDeck, and Klipt.";
 
 export const metadata: Metadata = {
-  alternates: {
-    canonical: "/projects",
-  },
+  alternates: { canonical: "/projects" },
   description,
   openGraph: {
     description,
@@ -32,47 +30,27 @@ export default function ProjectsPage() {
   const posts = getAllPosts();
 
   return (
-    <div className="pb-12 sm:pb-20">
-      <header className="grid gap-8 border-b border-zinc-200 py-12 sm:py-16 lg:grid-cols-[7rem_minmax(0,1fr)_18rem] dark:border-zinc-800">
-        <p className="font-mono text-xs text-violet-600 dark:text-violet-400">
-          INDEX / 2026
+    <div className="mx-auto max-w-[96rem] px-5 pb-12 sm:px-8 sm:pb-20 lg:px-12">
+      <header className="flex min-h-[70dvh] flex-col justify-center py-16">
+        <p className="eyebrow text-zinc-500 dark:text-zinc-400">Independent product work</p>
+        <h1 className="mt-7 text-[2.15rem] font-extrabold leading-[0.82] tracking-[-0.072em] text-zinc-950 sm:text-[clamp(3.4rem,10.8vw,10rem)] dark:text-white">
+          <span className="block">Four products.</span>
+          <span className="block">Four constraints.</span>
+        </h1>
+        <p className="mt-8 max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-300">
+          Local-first software, live operational data, native utilities, and hardware-aware tools, each documented through the decisions behind it.
         </p>
-        <div>
-          <h1 className="text-4xl font-bold tracking-[-0.035em] text-zinc-900 sm:text-5xl lg:text-6xl dark:text-zinc-50">
-            Project case files
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600 sm:text-lg sm:leading-8 dark:text-zinc-400">
-            Local-first software, live operational data, native utilities, and
-            hardware-aware tools. Each file records the constraint, system, and
-            current state.
-          </p>
-        </div>
-        <dl className="border-y border-zinc-200 font-mono text-[0.68rem] uppercase tracking-[0.08em] dark:border-zinc-800">
-          <div className="grid grid-cols-[5rem_1fr] gap-3 border-b border-zinc-200 py-3 dark:border-zinc-800">
-            <dt className="text-zinc-500">Files</dt>
-            <dd className="text-zinc-700 dark:text-zinc-300">{projects.length}</dd>
-          </div>
-          <div className="grid grid-cols-[5rem_1fr] gap-3 py-3">
-            <dt className="text-zinc-500">Scope</dt>
-            <dd className="text-zinc-700 dark:text-zinc-300">
-              Web / Native / Hardware
-            </dd>
-          </div>
-        </dl>
       </header>
 
-      <section aria-label="Project case files">
-        <ol>
-          {projects.map((project, index) => (
-            <li key={project.slug}>
-              <ProjectCaseFile
-                index={index}
-                posts={posts.filter((post) => post.project === project.name)}
-                project={project}
-              />
-            </li>
-          ))}
-        </ol>
+      <section aria-label="Selected projects">
+        {projects.map((project, index) => (
+          <ProjectCaseFile
+            key={project.slug}
+            index={index}
+            posts={posts.filter((post) => post.project === project.name)}
+            project={project}
+          />
+        ))}
       </section>
     </div>
   );

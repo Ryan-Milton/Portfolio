@@ -1,142 +1,109 @@
 # Design - Ryan Milton Portfolio
 
-A locked Hallmark design system for the portfolio. Every page uses the same
-technical-editorial language. Extend this file before introducing a local visual
-exception.
+## Design Read
 
-## Genre
+Reading this as a developer portfolio for hiring teams, with an
+Awwwards-experimental kinetic-editorial language, leaning toward custom Tailwind
+tokens, oversized grotesk typography, real product media, and isolated Motion
+scroll choreography.
 
-Technical editorial. The visual reference is an engineering field document: clear
-records, ruled indexes, precise metadata, and evidence before decoration. It must
-not imitate a terminal, cockpit, military form, or SaaS dashboard.
+## Mode And Dials
 
-## Audience And Action
+- Redesign mode: overhaul. Visual language starts over while content and
+  information architecture remain protected.
+- `DESIGN_VARIANCE`: 9. Each major section uses a distinct composition.
+- `MOTION_INTENSITY`: 8. Motion carries hierarchy and project storytelling.
+- `VISUAL_DENSITY`: 3. Hiring teams get one clear idea per viewport.
 
-- Primary audience: hiring teams evaluating senior product-engineering work.
-- Primary action: inspect projects and their supporting evidence.
-- Secondary actions: read development notes, download the resume, open GitHub or
-  LinkedIn.
+The previous reading was approximately 5 / 1 / 6: asymmetric editorial grids,
+almost no motion, and dense repeated metadata rows.
 
-## Macrostructure Family
+## Protected Contracts
 
-- Homepage: Index-First. A compact introduction leads directly into the project
-  register. No marketing hero or CTA cluster.
-- Projects: Catalogue. Each project is a numbered case file with consistent fields
-  and project-specific evidence.
-- Content: Long Document. About, devlog entries, privacy, and utility routes rely on
-  typography, margin metadata, and whitespace.
-- Indexes: chronological ruled lists for current and archived devlog entries.
+- Keep every route, project anchor, primary navigation label, and blog URL.
+- Keep `#selected-projects` as the homepage project destination.
+- Preserve the existing copy voice, factual claims, metadata, structured data,
+  and sitemap behavior.
+- Preserve focus states, semantic order, keyboard navigation, alt text, contrast,
+  and reduced-motion support.
+- Preserve all PostHog event names and property shapes.
+- Keep public contact details limited to GitHub, LinkedIn, YouTube, and the resume.
 
-## Navigation And Footer
+## Existing-State Audit
 
-- Navigation: N9 edge-aligned minimal. Identity at left, destinations at right,
-  theme and menu controls at the edge.
-- Footer: Ft4 dense colophon. Navigation, public profiles, privacy, and build
-  context share one ruled closing block.
+### Useful Content
 
-## Theme
+- Four substantial projects with constraints, architecture, current work, and
+  supporting devlogs.
+- A direct biography connecting aviation maintenance to dependable software.
+- Current Meta contract role and a downloadable resume.
+- Static MDX devlog, canonical metadata, Open Graph images, and structured data.
+- Anonymous, explicit-interaction-only analytics and a clear privacy page.
 
-Light:
+### Retired Patterns
 
-- `--color-paper`: oklch(96% 0.008 245)
-- `--color-paper-2`: oklch(92% 0.010 245)
-- `--color-ink`: oklch(18% 0.018 245)
-- `--color-ink-2`: oklch(34% 0.016 245)
-- `--color-muted`: oklch(48% 0.014 245)
-- `--color-rule`: oklch(78% 0.012 245)
-- `--color-accent`: oklch(61% 0.170 45)
-- `--color-accent-ink`: var(--color-paper)
-- `--color-focus`: oklch(50% 0.190 45)
+- Field-record and case-file vocabulary.
+- Numbered section eyebrows and repeated ruled lists.
+- Architecture blocks that can be mistaken for product screenshots.
+- Static placeholder motion components.
+- Hero metadata tables, build-style footer details, and hand-drawn icons.
 
-Dark:
+## Visual Language
 
-- `--color-paper`: oklch(15% 0.012 245)
-- `--color-paper-2`: oklch(20% 0.014 245)
-- `--color-ink`: oklch(93% 0.008 245)
-- `--color-ink-2`: oklch(78% 0.010 245)
-- `--color-muted`: oklch(67% 0.012 245)
-- `--color-rule`: oklch(32% 0.014 245)
-- `--color-accent`: oklch(72% 0.150 55)
-- `--color-accent-ink`: var(--color-paper)
-- `--color-focus`: oklch(78% 0.150 55)
+Genre: kinetic engineering editorial. The site should feel authored and
+experimental without obscuring project evidence.
 
-Accent use stays below five percent of a viewport. It marks actions, active records,
-focus, and small status signals only.
+- Display and body: Archivo, using weight and scale for hierarchy.
+- Technical details: IBM Plex Mono, used sparingly.
+- Light theme: warm optical white with carbon text.
+- Dark theme: carbon with optical-white text.
+- Single accent: electric yellow-green. It marks actions, focus, active project
+  state, and meaningful status only.
+- Radius: 4px for surfaces and controls. Circles are reserved for icon controls.
+- No gradients, glow fields, glass cards, invented interfaces, decorative SVGs,
+  or generic three-card grids.
 
-## Typography
+## Page Families
 
-- Display and body: Ubuntu, weights 400, 500, and 700, upright only.
-- Labels and technical metadata: Ubuntu Mono, weights 400 and 700.
-- Mono is limited to dates, indexes, statuses, and compact system data.
-- Display tracking: `-0.035em`.
-- Reading measure: 62 characters for articles, 72 for summaries.
-- Display scale: `clamp(2.75rem, 7vw, 7.5rem)` only where the page needs a display
-  statement. Index pages use smaller titles.
+- Homepage: full-viewport type composition followed by sticky project
+  storytelling, an offset experience sequence, a devlog index, and a portrait-led
+  biography close.
+- Projects: four evidence chapters with project-specific compositions. The same
+  template must not be repeated four times.
+- About: portrait-led long-form narrative with a compact career trajectory.
+- Devlog indexes: large typographic entries with selective media, not cards.
+- Articles and utility pages: restrained long-document layouts using the same
+  typography and tokens.
 
-## Spacing
+## Motion Rationale
 
-Use a four-point scale through named CSS variables:
+- Hero reveals establish reading order.
+- The project stage binds scroll progress to the selected evidence, turning a
+  long project list into one focused story at a time.
+- Image masks and restrained scale changes reveal real product detail.
+- Navigation and control motion communicates state transitions.
+- Article motion stays minimal so reading remains stable.
 
-- `--space-3xs`: 0.25rem
-- `--space-2xs`: 0.5rem
-- `--space-xs`: 0.75rem
-- `--space-sm`: 1rem
-- `--space-md`: 1.5rem
-- `--space-lg`: 2rem
-- `--space-xl`: 3rem
-- `--space-2xl`: 4.5rem
-- `--space-3xl`: 7rem
+All motion above a simple hover lives in small client-leaf components using
+Motion. Reduced motion removes transforms, parallax, and timed sequencing while
+preserving every piece of content.
 
-## Shape And Rules
+## Media Policy
 
-- Hairline and one-pixel rules provide structure.
-- Cards are reserved for actual media or contained controls, not every section.
-- Default radius is 0.375rem. Pills are reserved for availability only.
-- No gradients, glow blobs, glass surfaces, hard-offset shadows, or card-in-card
-  diagrams.
-- Project architecture uses numbered ruled rows.
+- Eagle Eye uses the existing public dashboard image with map attribution visible.
+- Knosys uses the approved synthetic-data Tasks capture.
+- The About page uses the existing portrait.
+- SpeedDeck and Klipt use factual, source-backed evidence compositions until safe
+  current screenshots exist. They must never be presented as screenshots.
+- Project media remains optional so new captures can be added without changing
+  page structure.
 
-## Motion
-
-- No entrance reveals or staggered page animation.
-- State transitions use `--duration-short: 160ms` and
-  `--ease-out: cubic-bezier(0.16, 1, 0.3, 1)`.
-- Project proof changes may crossfade; layout does not slide or bounce.
-- Reduced-motion disables transitions.
-
-## Microinteractions
-
-- Links use underline position, rule color, or text color. They do not lift.
-- Project rows expose the same state through hover, focus, and explicit selection.
-- Success is silent. No celebratory feedback or decorative cursor effects.
-- Icon-only controls are at least 44 by 44 pixels.
-
-## CTA Voice
-
-- Primary CTA: compact rectangular ink fill, short verb-first label.
-- Secondary CTA: typographic link with directional arrow.
-- No paired pill buttons and no repeated final CTA strip.
-
-## Per-Page Allowances
-
-- Homepage: one project proof pane using real media or project architecture.
-- Projects: real screenshots and architecture diagrams only; no invented device
-  frames.
-- Content: typography only, except a supplied article image or video.
-- About: one real portrait with a factual caption.
-
-## What Pages Must Share
-
-- Edge-aligned masthead and ruled footer.
-- Paper, ink, safety-orange accent, and focus treatment.
-- Ubuntu and Ubuntu Mono roles.
-- Numbered record labels and date formatting.
-- Compact rectangular controls and rule-based section rhythm.
-
-## Accessibility Floor
+## Accessibility And Performance Floor
 
 - No horizontal overflow at 320, 375, 414, or 768 pixels.
-- No two-line clickable labels.
-- All interaction available by keyboard and without hover.
-- Visible focus in both themes.
-- Minimum AA contrast, reduced-motion support, and semantic document order.
+- Hero copy and primary action fit the initial viewport.
+- Desktop navigation remains one line and no taller than 80px.
+- All interactions work with keyboard, touch, and without hover.
+- Minimum WCAG AA contrast in both themes.
+- No animation is required to understand content.
+- Target LCP under 2.5 seconds, INP under 200 milliseconds, and CLS under 0.1.

@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Personal portfolio for Ryan Milton built with Next.js 16, React 19, TypeScript, HeroUI v3, and Tailwind CSS v4. The site is statically generated and its devlog is file-based MDX.
+Personal portfolio for Ryan Milton built with Next.js 16, React 19, TypeScript, Tailwind CSS v4, and Motion. The site is statically generated and its devlog is file-based MDX.
 
 ## Commands
 
@@ -26,13 +26,13 @@ Use Node.js 22 and npm. Keep `package-lock.json` committed.
 
 ## Architecture
 
-Pages are Server Components by default. Client components are limited to navigation, themes, animation, and anonymous analytics interactions.
+Pages are Server Components by default. Client components are limited to navigation, themes, project-stage motion, click-to-load media, and anonymous analytics interactions.
 
 Projects live in `config/projects.ts`. Site navigation and public profile URLs live in `config/site.ts`.
 
 Devlog content lives in `content/blog/*.mdx` and supports `published` or `archived` status plus article or video formats. `lib/blog.ts` reads content from the filesystem, and `next-mdx-remote` is the only MDX rendering pipeline.
 
-HeroUI v3 uses compound component APIs and does not require a global provider. Tailwind v4 and HeroUI styles are imported from `styles/globals.css`.
+The custom kinetic-editorial design system is documented in `design.md` and implemented with Tailwind v4 tokens in `styles/globals.css`. Motion code belongs in isolated client leaves and must include reduced-motion behavior. Icons come from Phosphor.
 
 PostHog is production-only, anonymous, and intentionally limited. Do not enable identity, autocapture, surveys, or session replay without explicit approval.
 

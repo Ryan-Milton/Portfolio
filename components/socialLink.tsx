@@ -1,7 +1,11 @@
-import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  DownloadSimple,
+  GithubLogo,
+  LinkedinLogo,
+  YoutubeLogo,
+} from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
 
 import { TrackedLink } from "@/components/tracked-link";
@@ -13,7 +17,14 @@ type SocialLinkProps = Omit<
 > & {
   children?: ReactNode;
   href: string;
-  icon: IconDefinition;
+  icon: "download" | "github" | "linkedin" | "youtube";
+};
+
+const icons = {
+  download: DownloadSimple,
+  github: GithubLogo,
+  linkedin: LinkedinLogo,
+  youtube: YoutubeLogo,
 };
 
 const publicSocials = [
@@ -26,12 +37,13 @@ export default function SocialLink({
   className,
   href,
   children,
-  icon: Icon,
+  icon,
   "aria-label": ariaLabel,
   ...props
 }: SocialLinkProps) {
   const social = publicSocials.find((item) => item.href === href);
   const isInternal = href.startsWith("/");
+  const Icon = icons[icon];
 
   if (!isInternal && !social) return null;
 
@@ -40,7 +52,7 @@ export default function SocialLink({
       <TrackedLink
         {...props}
         aria-label={ariaLabel ?? (!children ? social?.label : undefined)}
-        className="group flex items-center rounded-md text-sm font-medium text-zinc-800 outline-none transition-colors hover:text-violet-600 focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none dark:text-zinc-200 dark:hover:text-violet-400"
+        className="group flex items-center rounded-sm text-base font-semibold text-zinc-800 outline-none transition-colors hover:text-zinc-950 focus-visible:ring-2 focus-visible:ring-violet-500 motion-reduce:transition-none dark:text-zinc-200 dark:hover:text-white"
         event={isInternal ? "resume_downloaded" : "social_link_clicked"}
         href={href}
         properties={
@@ -51,11 +63,7 @@ export default function SocialLink({
         rel={isInternal ? undefined : "noopener noreferrer"}
         target={isInternal ? undefined : "_blank"}
       >
-        <FontAwesomeIcon
-          aria-hidden="true"
-          className="h-6 w-6 flex-none text-zinc-500 transition-colors group-hover:text-violet-500 motion-reduce:transition-none"
-          icon={Icon}
-        />
+        <Icon aria-hidden className="flex-none text-zinc-500 transition-colors group-hover:text-violet-500 motion-reduce:transition-none" size={22} weight="bold" />
         {children && <span className="ml-4">{children}</span>}
       </TrackedLink>
     </li>

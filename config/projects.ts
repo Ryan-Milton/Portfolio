@@ -55,6 +55,10 @@ export const projects: Project[] = [
         type: "website",
       },
     ],
+    media: {
+      alt: "Knosys tasks interface on iOS",
+      src: "/projects/knosys-tasks.png",
+    },
     name: "Knosys",
     releaseLabel: "Official 2.1 / Summer 2026",
     role: "Sole creator",

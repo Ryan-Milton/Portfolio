@@ -1,19 +1,14 @@
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import "@/styles/globals.css";
 
-import { config } from "@fortawesome/fontawesome-svg-core";
 import type { Metadata, Viewport } from "next";
 
 import { Providers } from "./providers";
 
 import { AnonymousPageView } from "@/components/analytics";
 import { Footer } from "@/components/footer";
-import { PageTransition } from "@/components/motion";
 import { Navbar } from "@/components/navbar";
 import { fontMono, fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
-
-config.autoAddCss = false;
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -63,8 +58,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: "light dark",
   themeColor: [
-    { color: "oklch(96% 0.008 245)", media: "(prefers-color-scheme: light)" },
-    { color: "oklch(15% 0.012 245)", media: "(prefers-color-scheme: dark)" },
+    { color: "oklch(96.5% 0.008 95)", media: "(prefers-color-scheme: light)" },
+    { color: "oklch(13.5% 0.008 110)", media: "(prefers-color-scheme: dark)" },
   ],
 };
 
@@ -109,7 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       data-scroll-behavior="smooth"
       lang="en"
     >
-      <body className="min-h-screen bg-zinc-50 font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
+      <body className="min-h-[100dvh] bg-zinc-50 font-sans text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
         <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
         <Providers
           themeProps={{
@@ -119,7 +114,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         >
           <AnonymousPageView />
-          <div className="relative flex min-h-screen flex-col">
+          <div className="relative flex min-h-[100dvh] flex-col">
             <a
               className="sr-only z-[100] rounded-md bg-zinc-950 px-4 py-3 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 dark:bg-white dark:text-zinc-950"
               href="#main-content"
@@ -127,12 +122,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               Skip to main content
             </a>
             <Navbar />
-            <main
-              className="mx-auto w-full max-w-[88rem] flex-grow bg-zinc-50 px-6 lg:px-10 dark:bg-zinc-950"
-              id="main-content"
-            >
-              <PageTransition>{children}</PageTransition>
-            </main>
+            <main className="w-full flex-grow" id="main-content">{children}</main>
             <Footer />
           </div>
         </Providers>

@@ -1,13 +1,16 @@
-import { Ubuntu, Ubuntu_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
 
-export const fontSans = Ubuntu({
+export const fontSans = Archivo({
+  display: "optional",
   subsets: ["latin"],
-  variable: "--font-sans",
-  weight: ["300", "400", "500", "700"],
+  variable: "--font-archivo",
+  weight: "variable",
 });
 
-export const fontMono = Ubuntu_Mono({
+export const fontMono = IBM_Plex_Mono({
+  display: "optional",
+  preload: false,
   subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["400", "700"],
+  variable: "--font-ibm-plex-mono",
+  weight: "400",
 });

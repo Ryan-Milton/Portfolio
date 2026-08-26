@@ -1,204 +1,101 @@
-import { type Metadata } from "next";
+import type { Metadata } from "next";
+
 import Image from "next/image";
-import Link from "next/link";
-import clsx from "clsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faGithub,
-  faInstagram,
-  faLinkedin,
-  faXTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import { faDownload, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 import profilePic from "@/assets/FB_Profile.jpg";
-import { FadeIn, StaggerChildren } from "@/components/motion";
+import SocialLink from "@/components/socialLink";
+import { hasResume } from "@/components/resume";
+import { siteConfig } from "@/config/site";
 
-function SocialLink({
-  className,
-  href,
-  children,
-  icon: Icon,
-  download,
-}: {
-  className?: string;
-  href: string;
-  icon: any;
-  children: React.ReactNode;
-  download?: string;
-}) {
-  const linkClasses =
-    "group flex text-sm font-medium text-zinc-800 transition hover:text-primary-500 dark:text-zinc-200 dark:hover:text-primary-500";
-
-  if (download) {
-    return (
-      <li className={clsx(className, "flex")}>
-        <a className={linkClasses} download={download} href={href}>
-          <FontAwesomeIcon
-            className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-primary-500"
-            icon={Icon}
-          />
-          <span className="ml-4">{children}</span>
-        </a>
-      </li>
-    );
-  }
-
-  return (
-    <li className={clsx(className, "flex")}>
-      <Link
-        className={linkClasses}
-        href={href}
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        <FontAwesomeIcon
-          className="h-6 w-6 flex-none fill-zinc-500 transition group-hover:fill-primary-500"
-          icon={Icon}
-        />
-        <span className="ml-4">{children}</span>
-      </Link>
-    </li>
-  );
-}
+const description =
+  "Ryan Milton is a Seattle-based senior software engineer, product engineer, and Navy veteran.";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
+  description,
+  openGraph: {
+    description,
+    images: ["/opengraph-image"],
+    title: "About Ryan Milton",
+    type: "profile",
+    url: "/about",
+  },
   title: "About",
-  description:
-    "I'm Ryan Milton. I live in the Emerald City, where I design the future.",
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: ["/opengraph-image"],
+    title: "About Ryan Milton",
+  },
 };
 
 export default function About() {
   return (
-    <div className="mt-16">
-      <div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12">
-        <FadeIn className="lg:pl-20" direction="right">
-          <div className="max-w-xs px-2.5 lg:max-w-none">
-            <Image
-              alt=""
-              className="aspect-square rotate-3 rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800"
-              sizes="(min-width: 1024px) 32rem, 20rem"
-              src={profilePic}
-            />
+    <div className="mx-auto max-w-[96rem] px-5 sm:px-8 lg:px-12">
+      <header className="grid min-h-[calc(100dvh-4.5rem)] items-center gap-10 py-12 lg:grid-cols-[minmax(18rem,0.62fr)_minmax(0,1.38fr)] lg:gap-16">
+        <div className="media-frame order-2 aspect-[4/5] w-full max-w-xl lg:order-1">
+          <Image
+            fill
+            priority
+            alt="Ryan Milton in Seattle"
+            className="object-cover"
+            sizes="(min-width: 1024px) 38vw, 100vw"
+            src={profilePic}
+          />
+        </div>
+        <div className="order-1 lg:order-2">
+          <p className="eyebrow text-zinc-500 dark:text-zinc-400">About Ryan Milton</p>
+          <h1 className="mt-7 text-[2.4rem] font-extrabold leading-[0.84] tracking-[-0.075em] text-zinc-950 sm:text-[clamp(3.4rem,6.5vw,6.8rem)] dark:text-white">
+            <span className="block">Useful products.</span>
+            <span className="block text-violet-400">Built to last.</span>
+          </h1>
+          <p className="mt-8 max-w-xl text-lg leading-8 text-zinc-600 dark:text-zinc-300">
+            Seattle-based senior software engineer, product builder, and Navy veteran working across frontend, mobile, desktop, and native systems.
+          </p>
+        </div>
+      </header>
+
+      <section className="border-t border-zinc-200 py-20 sm:py-28 dark:border-zinc-800">
+        <div className="grid gap-14 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <p className="max-w-[18ch] text-3xl font-extrabold leading-[1.02] tracking-[-0.05em] text-zinc-950 sm:text-5xl dark:text-white">
+              Curiosity started with old computers. Responsibility came from aircraft. Product focus came from shipping software.
+            </p>
+
+            <div className="mt-12">
+              <h2 className="text-sm font-bold text-zinc-950 dark:text-white">Public links</h2>
+              <ul className="mt-5 space-y-4">
+                <SocialLink href={siteConfig.links.github} icon="github">GitHub</SocialLink>
+                <SocialLink href={siteConfig.links.linkedin} icon="linkedin">LinkedIn</SocialLink>
+                <SocialLink href={siteConfig.links.youtube} icon="youtube">YouTube devlogs</SocialLink>
+                {hasResume() && (
+                  <SocialLink download="Ryan_Milton_Resume.pdf" href="/resume.pdf" icon="download">
+                    Download resume
+                  </SocialLink>
+                )}
+              </ul>
+            </div>
           </div>
-        </FadeIn>
-        <div className="lg:order-first lg:row-span-2">
-          <FadeIn>
-            <h1 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100">
-              I&apos;m Ryan Milton. I live in Seattle, where I develop for the
-              future.
-            </h1>
-          </FadeIn>
-          <StaggerChildren
-            className="mt-6 space-y-7 text-base text-zinc-600 dark:text-zinc-400"
-            staggerDelay={0.08}
-          >
-            <FadeIn>
-              <p>
-                I&apos;ve loved technology for as long as I can remember. When I
-                was young my dad worked as a hardware engineer and would bring
-                home old computers for me to take apart and put back together.
-                I&apos;d spend hours in our garage, surrounded by the smell of
-                solder and the hum of the air conditioner, trying to figure out
-                how everything fit together, tweaking and reinstalling the BIOS.
-                I was hooked.
-              </p>
-            </FadeIn>
-            <FadeIn>
-              <p>
-                After I graduated high school, I joined the Navy as an Aviation
-                Electrian and worked on EA-18G Growlers and F/A-18 Super
-                Hornets. I spent a lot of time on many different aircraft
-                carriers, on the flight deck, in the Persian Gulf, and in
-                Afghanistan. I loved the smell of jet fuel and the sound of the
-                engines, but I knew I wanted to do more.
-              </p>
-            </FadeIn>
-            <FadeIn>
-              <p>
-                During my last 2 years in the Navy I started learning how to
-                code. I started with the basics; HTML, CSS, and JavaScript.
-                After I got out, I went to a coding bootcamp in Seattle and
-                learned how to build full stack applications. I loved the
-                challenge of learning new things and building something from
-                nothing. I knew I had found my calling.
-              </p>
-            </FadeIn>
-            <FadeIn>
-              <p>
-                Today, I work as a software engineer, focusing on creating
-                beautiful and intuitive user interfaces using the latest
-                technologies. I love what I do and I&apos;m always looking for
-                ways to improve my skills and learn new things. I&apos;m excited
-                to see what the future holds.
-              </p>
-            </FadeIn>
-            <FadeIn>
-              <p>
-                Oh, and I have a healthy obsession with japanese Kei cars and
-                trucks. Check the Insta lol.
-              </p>
-            </FadeIn>
-          </StaggerChildren>
+
+          <div className="max-w-2xl space-y-8 text-[1.08rem] leading-8 text-zinc-600 dark:text-zinc-300">
+            <p>
+              I&apos;ve loved technology for as long as I can remember. My dad worked as a hardware engineer and brought home old computers for me to take apart and rebuild. I spent hours learning how the pieces fit together, experimenting with hardware, and reinstalling the BIOS when an experiment went sideways.
+            </p>
+            <p>
+              After high school, I joined the Navy as an aviation electrician, working on EA-18G Growlers and F/A-18 Super Hornets. Time on flight decks, deployments, and operational teams taught me to be deliberate, communicate clearly, and respect the real-world cost of unreliable systems.
+            </p>
+            <p>
+              I began learning HTML, CSS, and JavaScript during my final years in the Navy, then attended a Seattle coding bootcamp after leaving the service. Since then I&apos;ve worked across React, React Native, frontend platforms, and product engineering roles at Groupon, Buddy Technologies, HealthBridge, Anduril, and Meta.
+            </p>
+            <p>
+              Today I focus on frontend, mobile, and product engineering. I primarily build in JavaScript and TypeScript ecosystems, while projects such as Knosys and SpeedDeck have taken me deeper into native Swift, Rust, local-first data, hardware integration, and encrypted synchronization.
+            </p>
+            <p>
+              Outside software, I&apos;m usually learning something mechanical or spending time around Japanese kei cars and trucks. The same curiosity that started with old computers still drives the work.
+            </p>
+          </div>
         </div>
-        <div className="lg:pl-20">
-          <StaggerChildren staggerDelay={0.06}>
-            <ul>
-              <FadeIn>
-                <SocialLink href="https://x.com/ryan__milton" icon={faXTwitter}>
-                  Follow on X
-                </SocialLink>
-              </FadeIn>
-              <FadeIn>
-                <SocialLink
-                  className="mt-4"
-                  href="https://www.instagram.com/ryan_ohkeilife"
-                  icon={faInstagram}
-                >
-                  Follow on Instagram
-                </SocialLink>
-              </FadeIn>
-              <FadeIn>
-                <SocialLink
-                  className="mt-4"
-                  href="https://github.com/Ryan-Milton"
-                  icon={faGithub}
-                >
-                  Follow on GitHub
-                </SocialLink>
-              </FadeIn>
-              <FadeIn>
-                <SocialLink
-                  className="mt-4"
-                  href="https://www.linkedin.com/in/ryanmilton"
-                  icon={faLinkedin}
-                >
-                  Follow on LinkedIn
-                </SocialLink>
-              </FadeIn>
-              <FadeIn>
-                <SocialLink
-                  className="mt-4"
-                  download="Ryan_Milton_Resume.pdf"
-                  href="/resume.pdf"
-                  icon={faDownload}
-                >
-                  Download Resume
-                </SocialLink>
-              </FadeIn>
-              <FadeIn>
-                <SocialLink
-                  className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
-                  href="mailto:mr.ryan.milton@gmail.com?subject=Inquiry%20About%20Your%20Services"
-                  icon={faEnvelope}
-                >
-                  mr.ryan.milton@gmail.com
-                </SocialLink>
-              </FadeIn>
-            </ul>
-          </StaggerChildren>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

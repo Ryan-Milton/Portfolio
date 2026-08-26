@@ -1,0 +1,55 @@
+---
+title: "Taking Knosys Native: SwiftUI and Encrypted Sync V2"
+summary: "How I built a native, offline-first iOS foundation for Knosys while redesigning encrypted sync around logical entities, transactional outboxes, and deterministic conflict handling."
+publishedAt: "2026-07-17"
+status: "published"
+format: "article"
+project: "Knosys"
+tags: ["SwiftUI", "iOS", "encrypted sync", "offline-first", "architecture"]
+---
+
+Knosys began as a desktop-first application, but its data model was always meant to travel. Notes, tasks, reminders, calendars, and attachments are most useful when they are available wherever the user is, including when the network is not.
+
+Adding iOS support was therefore more than building another interface. I needed a mobile architecture that could work independently, preserve the privacy model, and safely exchange data with an existing desktop application. The result was a native SwiftUI app alongside a redesigned encrypted sync protocol.
+
+This work merged the repository implementation for iOS and sync v2 on July 17, 2026. It did not represent an App Store launch or completed production rollout. Provisioning, physical-device release validation, hosted operations, and external review remained separate release gates.
+
+## Why I Chose a Native App
+
+I evaluated continuing with the existing cross-platform mobile prototype, but the shipping direction required tighter control over local persistence, background execution, protected credentials, file handling, widgets, and system integrations.
+
+I chose SwiftUI for the application layer and GRDB over SQLite for persistence. A separate core package owns entities, repositories, encryption, sync coordination, and conflict behavior without depending on a particular view. That separation lets the interface remain idiomatic SwiftUI while the data layer enforces rules consistently.
+
+The app was designed to remain useful offline. Notes, calendars, tasks, reminders, subtasks, and attachments are stored locally rather than fetched on demand. A local edit commits both the visible state and its synchronization intent in one database transaction. If the process stops after the edit, the durable outbox still knows what must be uploaded later.
+
+Canonical Markdown remains the long-term note format. Note identity uses immutable UUIDs instead of filenames, so users can rename or reorganize files without changing the logical record being synchronized.
+
+## Syncing Meaning Instead of Storage
+
+The first sync implementation mirrored physical desktop storage: table names, columns, paths, and row-shaped operations. That got encrypted sync working, but it coupled every client to desktop implementation details.
+
+Sync v2 exchanges versioned logical entities instead. A note is a note, regardless of whether one client projects it into Markdown files and another stores it in SQLite. Platform-specific paths, database names, and framework identifiers never enter the cloud entity model.
+
+Content is encrypted on trusted devices with XChaCha20-Poly1305. Each installation also creates its own Ed25519 signing key for authenticated requests. Because device identity is separate from the recovery phrase, an individual device can be revoked without rotating the workspace encryption key.
+
+Ordering uses hybrid logical clocks rather than trusting wall-clock timestamps alone. Mergeable metadata can resolve field by field. Concurrent note-body edits are treated more cautiously: deterministic ordering selects the primary version, while the losing body becomes a recoverable conflict copy. Preserving user writing was more important than pretending every conflict could be merged automatically.
+
+Shared schemas and frozen test vectors verify that the Swift and TypeScript implementations serialize, encrypt, sign, and interpret the same bytes.
+
+## Making Failure a Normal Case
+
+The difficult part of sync is not the successful request. It is interruption between two state transitions.
+
+Pulled pages are applied transactionally, and their cursor advances only after the page has been processed successfully. Operations that are invalid or require a newer client can be quarantined instead of permanently blocking every later operation. Snapshots and attachments use bounded, resumable encrypted transfers with exact size and hash checks.
+
+Desktop migration required similar care. Existing files and databases are scanned into logical entities, but normal writers do not start until migration, verification, registration, bootstrap, and projection are ready. Verified backups, durable intent journals, writer leases, and activation guards make interrupted conversion recoverable rather than best effort.
+
+License pairing follows the same privacy boundary. The one-time QR flow exchanges public session material, while ephemeral key agreement encrypts the license for the destination device. The relay handles ciphertext and state transitions, not plaintext credentials or recovery material.
+
+## Tradeoffs and Validation
+
+Choosing native SwiftUI means maintaining Swift and TypeScript implementations of important protocol behavior. I accepted that duplication because native lifecycle control and protected local storage were product requirements. Cross-language schemas and vectors are the mechanism that keeps those implementations aligned.
+
+The stronger delivery guarantees also create more machinery: outboxes, tombstones, snapshots, quarantine, projection receipts, and migration journals. That complexity is intentional. Offline-first software cannot assume the network, process, or filesystem will remain available between two lines of code.
+
+Validation covered the Swift core and application layers, shared protocol contracts, desktop migration and sync matrices, server integration tests, packaging checks, and a simulator build and launch. Those checks established a repository-level release foundation, while production deployment, signed physical-device testing, and App Store distribution remained work outside this merge.

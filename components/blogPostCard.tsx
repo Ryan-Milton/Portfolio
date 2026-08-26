@@ -1,76 +1,85 @@
-"use client";
-
 import type { PostMeta } from "@/lib/blog";
 
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
-import { motion } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
-import Link from "next/link";
 
-export default function PostCard({ post }: { post: PostMeta }) {
+import { TrackedLink } from "@/components/tracked-link";
+import { formatUtcDate } from "@/lib/date";
+
+interface PostCardProps {
+  headingLevel?: 2 | 3;
+  post: PostMeta;
+}
+
+export default function PostCard({ headingLevel = 3, post }: PostCardProps) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
+  const externalAction = post.format === "video" ? "Watch video" : "Open article";
+  const externalDestination = post.format === "video" ? " on YouTube" : "";
+
   return (
-    <motion.div transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
-      <Card className="overflow-hidden border border-zinc-100 bg-zinc-50/10 text-left transition-shadow duration-300 hover:shadow-md dark:border-zinc-700/40 dark:bg-zinc-800/10">
-        {post.image && (
-          <CardHeader className="overflow-hidden rounded-t-lg p-0">
-            <Image
-              alt={post.title}
-              className="h-40 w-full object-cover"
-              height={160}
-              src={post.image}
-              width={400}
-            />
-          </CardHeader>
-        )}
-        <CardHeader className="flex-col items-start px-5 pb-0 pt-5">
-          <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
-            {post.title}
-          </h3>
-          <div className="mt-1 flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500">
-            <time dateTime={post.publishedAt}>
-              {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </time>
-            {post.readingTime && (
-              <>
-                <span aria-hidden="true">&middot;</span>
-                <span>{post.readingTime} min read</span>
-              </>
-            )}
+    <article className="group border-b border-zinc-200 py-7 first:pt-0 dark:border-zinc-800">
+      <div className={post.image ? "grid gap-6 sm:grid-cols-[minmax(0,1fr)_10rem] sm:items-start" : undefined}>
+        <div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-zinc-500 dark:text-zinc-400">
+            <time dateTime={post.publishedAt}>{formatUtcDate(post.publishedAt, "short")}</time>
+            <span>{post.project ?? "General"}</span>
+            <span>{post.format}</span>
+            {post.format === "article" && <span>{post.readingTime} min</span>}
           </div>
-        </CardHeader>
-        <CardBody className="px-5">
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            {post.summary}
-          </p>
+          <Heading className="mt-4 text-2xl font-extrabold leading-tight tracking-[-0.045em] text-zinc-950 sm:text-3xl dark:text-white">
+            <TrackedLink
+              className="transition-colors hover:text-zinc-600 dark:hover:text-zinc-300"
+              event="devlog_opened"
+              href={`/blog/${post.slug}`}
+              properties={{ destination: "internal", slug: post.slug }}
+            >
+              {post.title}
+            </TrackedLink>
+          </Heading>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600 sm:text-base sm:leading-7 dark:text-zinc-400">{post.summary}</p>
           {post.tags && post.tags.length > 0 && (
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] font-medium text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
-                >
-                  {tag}
-                </span>
+            <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1" aria-label="Topics">
+              {post.tags.slice(0, 4).map((tag) => (
+                <span key={tag} className="font-mono text-[0.65rem] text-zinc-500 dark:text-zinc-400">{tag}</span>
               ))}
             </div>
           )}
-        </CardBody>
-        <CardFooter className="px-5 pb-5 pt-2">
-          <Link
-            className="group flex items-center gap-1 text-sm font-medium text-primary-500 dark:text-primary-400"
-            href={`/blog/${post.slug}`}
-          >
-            Read more
-            <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
-              &rarr;
-            </span>
-          </Link>
-        </CardFooter>
-      </Card>
-    </motion.div>
+          <footer className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+            <TrackedLink
+              className="group/link inline-flex items-center gap-2 text-sm font-bold text-zinc-950 dark:text-white"
+              event="devlog_opened"
+              href={`/blog/${post.slug}`}
+              properties={{ destination: "internal", slug: post.slug }}
+            >
+              {post.externalUrl ? "Devlog notes" : "Read entry"}
+              <ArrowRight aria-hidden className="transition-transform group-hover/link:translate-x-1 motion-reduce:transition-none" size={16} weight="bold" />
+            </TrackedLink>
+            {post.externalUrl && (
+              <TrackedLink
+                className="group/link inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-600 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                event="devlog_opened"
+                href={post.externalUrl}
+                properties={{ destination: "external", slug: post.slug }}
+                rel="noreferrer"
+                target="_blank"
+                aria-label={`${externalAction}: ${post.title}${externalDestination} (opens in a new tab)`}
+              >
+                {externalAction}
+                <ArrowUpRight aria-hidden className="transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 motion-reduce:transition-none" size={15} weight="bold" />
+              </TrackedLink>
+            )}
+          </footer>
+        </div>
+        {post.image && (
+          <Image
+            alt=""
+            className="aspect-[4/3] w-full rounded-sm object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none"
+            height={120}
+            src={post.image}
+            width={160}
+          />
+        )}
+      </div>
+    </article>
   );
 }

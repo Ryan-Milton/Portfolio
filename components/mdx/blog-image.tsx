@@ -18,14 +18,14 @@ export function BlogImage({ src, alt, width, height }: BlogImageProps) {
         // eslint-disable-next-line
         <img
           alt={alt || ""}
-          className="w-full rounded-lg"
+          className="w-full rounded-sm"
           loading="lazy"
           src={src}
         />
       ) : (
         <Image
           alt={alt || ""}
-          className="rounded-lg"
+          className="rounded-sm"
           height={height || 630}
           sizes="(max-width: 768px) 100vw, 720px"
           src={src}
@@ -33,7 +33,7 @@ export function BlogImage({ src, alt, width, height }: BlogImageProps) {
         />
       )}
       {alt && (
-        <figcaption className="mt-2 text-center text-sm text-zinc-500 dark:text-zinc-400">
+        <figcaption className="mt-3 text-left font-mono text-xs text-zinc-500 dark:text-zinc-400">
           {alt}
         </figcaption>
       )}

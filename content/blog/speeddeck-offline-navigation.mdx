@@ -1,0 +1,55 @@
+---
+title: "Offline Navigation on a Steam Deck"
+summary: "How I combined OSRM, OpenStreetMap, OpenAddresses, SQLite FTS5, and a React guidance interface to add offline turn-by-turn navigation to SpeedDeck."
+publishedAt: "2026-04-01"
+status: "published"
+format: "article"
+project: "SpeedDeck"
+tags: ["navigation", "OSRM", "OpenStreetMap", "Python", "Steam Deck"]
+---
+
+A navigation system designed for the Steam Deck cannot assume it will have a network connection. The Deck is commonly used as a Wi-Fi-only device, and the places where navigation matters most are often the places where connectivity is least reliable.
+
+SpeedDeck already had a live GPS feed, a driving map, and a CarPlay-style dashboard. [Pull request #3](https://github.com/Ryan-Milton/SpeedDeck/pull/3) connected those pieces into an offline turn-by-turn navigation system. The result could download a regional road network, build a local address index, calculate routes through OSRM, and present guidance on both the full map and compact dashboard.
+
+I kept the navigation backend in Python because v1 already had a WebSocket command layer, an asyncio event loop, and SQLite storage. The frontend could request routes and search results without adding another Electron IPC surface.
+
+## Preparing a Region for Offline Use
+
+The navigation manager downloads an OpenStreetMap PBF extract for a selected region and optionally downloads OpenAddresses data for more complete street-address coverage. It then runs the OSRM MLD preparation pipeline: `osrm-extract`, `osrm-partition`, and `osrm-customize`.
+
+These operations are expensive, but they only need to happen when a region is installed or updated. Once processing is complete, SpeedDeck launches `osrm-routed` on a local port and checks its HTTP endpoint until it is ready.
+
+The first download implementation used asynchronous HTTP, but it competed with multiple WebSocket clients and could stall during long transfers. I replaced it with `urllib.request` running in a dedicated background thread. Progress is stored in a shared state object and polled by the frontend every 500 milliseconds.
+
+Polling is less elegant than pushing progress events, but it isolates file transfer from the asyncio event loop. Route commands and GPS updates remain responsive even while a large regional archive is being downloaded.
+
+## Building Local Address Search
+
+Routing coordinates is only half of navigation. Users need to find destinations by name or address without an internet service.
+
+The local geocoder builds a SQLite database from two sources. An `osmium` handler extracts cities, neighborhoods, named roads, points of interest, and tagged addresses from the OSM PBF. OpenAddresses contributes government and open-data address records that may not be present in OpenStreetMap.
+
+Records are inserted in batches before SpeedDeck creates an FTS5 index. Search uses prefix matching, then ranks results by category importance and distance from the current position. During Washington testing, the PR recorded approximately 2.78 million OpenAddresses entries in addition to the OSM-derived places.
+
+The search cascade has three levels. It queries the local FTS5 index first. If there is no result and a connection is available, it tries Nominatim. If a numbered address still fails, it removes the house number and retries the street name locally.
+
+One review finding caught an important concurrency problem: the synchronous Nominatim request could block the asyncio event loop for its full five-second timeout. Moving that fallback into an executor prevented an online search failure from freezing GPS and navigation WebSocket traffic.
+
+## Turning Routes into Guidance
+
+The React frontend added a dual-field origin and destination search overlay, route preview, turn banner, ETA bar, and routing-data installer. The same guidance components appear on the full map and dashboard so switching views does not change the navigation model.
+
+OSRM returns route geometry and maneuver steps. The Zustand navigation store maps each maneuver to a range of coordinates in the full route, then searches a bounded window around the active step for the nearest segment. From that projection it calculates distance to the next maneuver, remaining route distance, the current street, and an estimated arrival time.
+
+The initial implementation considered the vehicle off route when it moved more than 50 meters from the route geometry. `useNavigation` required the condition to persist before requesting a replacement route, which avoided immediate reroutes from a single noisy GPS sample.
+
+This turned SpeedDeck from a map display into a practical driving companion. A user could prepare data while connected, leave Wi-Fi coverage, search local addresses, preview a route, and continue receiving guidance from the physical GNSS feed.
+
+## Tradeoffs and Validation
+
+Offline capability moves work from request time to installation time. Building a state-sized geocoder could take 15 to 20 minutes, and OSRM binaries had to be installed separately in the v1 development environment. Regional PBF files, routing graphs, and address databases also consume meaningful storage.
+
+The local-first search design reduced network dependence but did not eliminate external services entirely. Nominatim remained a fallback for gaps, and OpenAddresses availability depended on a third-party download service. Both failures degraded to the local OSM index rather than disabling navigation.
+
+Validation was primarily manual on macOS. The PR recorded a complete Washington region download, OSRM route calculation, local address search, route preview, and turn guidance in both map layouts. A command-line route check produced a plausible five-mile route with six maneuver steps. The Electron build and Python imports passed, but the project did not yet have an automated test suite, and this work did not constitute full physical Steam Deck or on-road validation. Later pull requests refined rerouting retries, ETA behavior, speed-limit fallback, and sub-segment distance accuracy as the first navigation model encountered more edge cases.
